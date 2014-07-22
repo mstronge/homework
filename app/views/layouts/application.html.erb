@@ -4,42 +4,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'foundation-icons/foundation-icons' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <%= javascript_include_tag "vendor/modernizr" %>
 
 <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
-  
+
 </head>
 <body>
 
-<header>
-<div class="row">
-<div class="large-4 columns">
-
-<h1>Homework Application</h1>
-<h3>Manage your guitar students homework and schedule</h3>
-
-</div>
-
-<div class="large-8 columns text-right">
-
-<a href="#">Home</a> | <a href="#">About</a> | <a href="#">Contact</a>
-
-<br>
-
-<a class="success button small radius">Login</a>
-	
-</div>
-
-</div>
-
-</header>
+<%= render 'layouts/header' %>
 
 <div class="row">
 
 <%= yield %>
-
 
 </div>
 

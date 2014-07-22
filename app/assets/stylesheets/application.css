@@ -18,19 +18,55 @@
 
 body {
 	font-family: 'Noto Sans', sans-serif;
+	background-color: #fbfbfb;
 }
 
 header {
-	border-bottom:1px solid #ebebeb;
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
 
-header h1 {
-	font-size: 14pt;
+#topnav {
+	padding-top: 20px;
+	color: #f6f6f6;
 }
 
-header h3 {
+#topnav a {
+	font-family: 'Noto Sans', sans-serif;
+	color: #9f9f9f;
 	font-size: 11pt;
-	color:#dedede;
+	font-weight: 700;
+}
+
+#topnav .success {
+	margin-top: 20px;
+	color: #FFF;
+	font-family: 'Noto Sans', sans-serif;
+	font-weight: 700;
+	font-size:12pt;
+	padding:10px;
+	width:220px;
+}
+
+#signup-panel .panel {
+	background-color: #FFF;
+	border:none;
+	box-shadow: 3px 3px 5px #dedede;
+	padding-top: 40px;
+	padding-bottom: 40px;	
+}
+
+#signup-panel h1 {
+		font-family: 'Noto Sans', sans-serif;
+		color: #575757;
+		margin-bottom: 40px;
+}
+
+#signup-panel .success {
+	color: #FFF;
+	font-family: 'Noto Sans', sans-serif;
+	font-weight: 700;
+	font-size:12pt;
+	padding:10px;
+	width:220px;
 }
