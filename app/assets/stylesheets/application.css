@@ -13,3 +13,24 @@
  *= require_tree .
  *= require_self
  */
+
+/*= require foundation */
+
+body {
+	font-family: 'Noto Sans', sans-serif;
+}
+
+header {
+	border-bottom:1px solid #ebebeb;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+header h1 {
+	font-size: 14pt;
+}
+
+header h3 {
+	font-size: 11pt;
+	color:#dedede;
+}
