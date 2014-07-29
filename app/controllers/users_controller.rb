@@ -7,6 +7,11 @@ class UsersController < ApplicationController
   end
 
   def new
+  	if signed_in?
+  		redirect_to root_path
+  		flash[:success] = "You are already signed in."
+  	end
+
   	@title = "Sign up"
   	@user = User.new
   end

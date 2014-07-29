@@ -12,26 +12,37 @@
 
 <br>
 
-<%= link_to '<i class="fi-torso"></i> Login'.html_safe , '/login/' , :class => "success button small radius" %> 
+<% if signed_in? %>
 
+<%= link_to '<i class="fi-torso"></i> Logout'.html_safe , logout_path , :class => "success button small radius" %> 
+
+<% else %>
+
+<%= link_to '<i class="fi-torso"></i> Login'.html_safe , login_path , :class => "success button small radius" %> 
+
+<% end %>
 
 </div>
+
+<% if signed_in? %>
 
 <nav>
 
 <div class="large-12 columns">
 <div id="nav">
-	<h5>Welcome %username%</h5>
+	<h5>Welcome <%= current_user.name %></h5>
 
 	<a href="#">My Homework Diary</a>
 	<a href="#">My Lesson Timetable</a>
 	<a href="#">Resource Area</a>
-	<a href="#">Account Details</a>
-	<a href="#">Logout</a>
+	<%= link_to "Account Details", current_user %>
+
 </div>
 </div>
 
 </nav>
+
+<% end %>
 
 </div>
 

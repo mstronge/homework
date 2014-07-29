@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= stylesheet_link_tag    'foundation-icons/foundation-icons' %>
+  <%= stylesheet_link_tag    'foundation-icons/foundation-icons', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <%= javascript_include_tag "vendor/modernizr" %>
@@ -22,20 +22,27 @@
 	
 <% flash.each do |key, value| %>
 
-<div data-alert class="alert-box <%= key %> radius">
+<div data-alert class="alert-box <%= key %> radius text-center">
   <%= value %>
-  <a href="#" class="close">&times;</a>
 </div>
 
 <% end %>
 
 </div>
 
+<div class="clear"></div>
+
 <%= yield %>
 
 <%= debug(params) if Rails.env.development? %>
 
 </div>
+
+<script type="text/javascript">
+$(function() {
+  $(document).foundation();
+});
+</script>
 
 </body>
 </html>
