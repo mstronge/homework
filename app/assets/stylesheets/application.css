@@ -92,3 +92,26 @@ header {
 	padding-left: 10px;
 	margin:0px;
 }
+
+#error_explanation {
+	background-color:#fce6e6;
+	padding: 20px;
+	border:1px solid #f8cdcd;
+	margin-bottom: 20px;
+}
+
+#error_explanation h4 {
+	color: red;
+}
+
+.field_with_errors {
+	background-color:#fce6e6;
+	padding:10px;
+	}
+.field_with_errors input {
+	margin:0px !important
+}
+
+.field-item {
+	margin-bottom: 20px;
+}

@@ -1,24 +1,32 @@
 
-<div class="large-8 columns large-centered">
+<div id="signup-panel" class="large-8 columns large-centered radius">
 <div class="panel">
 <h1>Signup</h1>
 <p>Please fill in the following fields to signup</p>
 
 <%= form_for(@user) do |f| %>
 
-<%= f.label :name %><br />
+<%= render 'shared/error_messages', :object => @user %>
+
+<div class="field-item">
+<%= f.label :name %>
 <%= f.text_field :name %>
-
-<%= f.label :email %><br />
+</div>
+<div class="field-item">
+<%= f.label :email %>
 <%= f.text_field :email %>
-
-<%= f.label :password %><br />
+</div>
+<div class="field-item">
+<%= f.label :password %>
 <%= f.password_field :password %>
-
-<%= f.label :password_confirmation, "Confirm your password" %><br />
+</div>
+<div class="field-item">
+<%= f.label :password_confirmation, "Confirm your password" %>
 <%= f.password_field :password_confirmation %>
-
+</div>
+<div class="field-item">
 <%= f.submit "Sign up", :class => "success button" %>
+</div>
 
 <% end %>
 
