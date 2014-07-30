@@ -25,6 +25,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'foundation-rails'
 gem 'protected_attributes'
+gem 'will_paginate'
 
 gem 'annotate', group: :development
 

@@ -1,6 +1,12 @@
 class UsersController < ApplicationController
-  before_filter :authenticate, :only => [:edit, :update, :show]
+  before_filter :authenticate, :only => [:index, :edit, :update, :show]
   before_filter :correct_user, :only => [:edit, :update, :show]
+
+
+  def index
+    @users = User.paginate(:page => params[:page], :per_page => 5)
+    @title = "All users"
+  end
 
   def show
   	@user = User.find(params[:id])
@@ -53,6 +59,7 @@ class UsersController < ApplicationController
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_path) unless current_user?(@user)
+      flash[:alert] = "You are not authorised to view this page."  unless current_user?(@user)
     end
 
 end
