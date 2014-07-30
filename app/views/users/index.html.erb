@@ -1,3 +1,5 @@
+<% if current_user.admin? %>
+
 <div id="list-users" class="large-12 columns">
 
 <h2>Administration</h2>
@@ -15,7 +17,7 @@
 <tr>
 <td><%= user.name %></td>
 <td><%= user.email %></td>
-<td><%= link_to "Edit", edit_user_path(user.id) %> | <%= link_to "Delete",  edit_user_path(user.id) %></td>
+<td><%= link_to "Edit", edit_user_path(user.id) %> | <%= link_to "Delete",  user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 </tr>
 <% end %>
 
@@ -26,3 +28,5 @@
 </div>
 
 </div>
+
+<% end %>

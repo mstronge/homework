@@ -175,18 +175,67 @@ header {
 	text-decoration: underline;
 }
 
+#list-users h2 {
+		font-family: 'Noto Sans', sans-serif;
+		color: #575757;
+		margin-bottom: 20px;
+		font-size: 20pt;
+	
+}
+
+#list-users h4 {
+		font-family: 'Noto Sans', sans-serif;
+		color: #5da422;
+		margin-bottom: 10px;
+		font-size: 13pt;
+		font-weight: 700;
+	
+}
+
+#list-users h2 {
+		font-family: 'Noto Sans', sans-serif;
+		color: #575757;
+		margin-bottom: 20px;
+		font-size: 20pt;
+	
+}
+
+#list-users table {
+	border:none;
+}
+
+#admin-nav {
+	background-color: #575757;
+	padding:10px;
+}
+
+#admin-nav h5 {
+	color: #FFF;
+	font-size: 12pt;
+	font-weight: 700;
+	font-family: 'Noto Sans', sans-serif;
+}
+
+#admin-nav a {
+	display: inline-block;
+	padding:5px;
+	background-color: #343434;
+	color: #dedede;
+}
+
 /* Pagination */
 
 .apple_pagination {
-  background: #f1f1f1;
-  border: 1px solid #e5e5e5;
+	background-color: #FFF;
+	border:none;
+	box-shadow: 1px 1px 2px #ebebeb;
   text-align: center;
   padding: 1em;
   cursor: default; }
   .apple_pagination a, .apple_pagination span {
     padding: 0.2em 0.3em; }
   .apple_pagination .disabled {
-    color: #aaaaaa; }
+    color: #dedede; }
   .apple_pagination .current {
     font-style: normal;
     font-weight: bold;

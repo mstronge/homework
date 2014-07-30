@@ -42,7 +42,24 @@
 
 </nav>
 
+<% if current_user.admin? %>
+
+<div class="large-12 columns">
+<div id="admin-nav">
+	<h5>Logged in as Admin</h5>
+
+	<%= link_to "Edit users", users_path %>
+	<a href="#">Global settings</a>
+	<a href="#">Assign Parents</a>
+
+</div>
+</div>
+
 <% end %>
+
+
+<% end %>
+
 
 </div>
 
