@@ -29,7 +29,7 @@ group :development do
 end
 
 gem 'carrierwave', '0.10.0'
-gem "rmagick", "2.13.3"
+#gem "rmagick", "2.13.3"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
