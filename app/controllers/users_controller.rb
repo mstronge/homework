@@ -9,8 +9,8 @@ class UsersController < ApplicationController
   end
 
   def show
-  	@user = User.find(params[:id])
-  	@title = @user.name
+    @user = User.find(params[:id])
+    @title = @user.name
     @current_user = @user
   end
 
@@ -38,6 +38,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     @title = "Edit account details"
+
   end
 
   def update

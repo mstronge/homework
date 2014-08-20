@@ -1,0 +1,22 @@
+  <tr id="resource_<%= resource.id %>">
+    <td><%= resource.id %></td>
+    <td>
+      <% if !resource.attachment.file.nil? %>
+          <%= link_to resource.attachment.file.original_filename, resource.attachment.url %>
+      <% end %>
+      <% if !resource.link.nil? %>
+          <%= link_to resource.link, resource.link %>
+      <% end %>
+    </td>
+    <td><%= resource.created_at.strftime("%d %b %y, %H:%M") %></td>
+    <td>
+      <% if resource.tag != 'other' %>
+        <%= resource.tag %>
+      <% else %>
+        <%= resource.attachment.content_type %>
+      <% end %>
+    </td>
+    <% if current_user.admin? %>
+      <td><%= link_to "Delete",  resource, method: :delete, remote: :true, data: { confirm: 'Are you sure?' } %></td>
+    <% end %>
+  </tr>

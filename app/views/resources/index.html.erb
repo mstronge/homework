@@ -1,0 +1,36 @@
+<div id="list-resources" class="panel">
+
+<% if current_user.admin? %>
+  <h3>New resource</h3>
+  <div class="panel">
+    <%= form_for Resource.new do |f| %>
+      <%= f.file_field :attachment %>
+      <%= f.hidden_field :attachment_cache %>
+      <%= label_tag(:remote_link, "Remote link") %>
+      <%= f.text_field :link %>
+      <%= f.submit 'Add new resource' %>
+    <% end %>
+  </div>
+<% end %>
+
+<h3>Available resources</h3>
+
+<table width="100%" class="users">
+  <tr>
+    <th>Id</th>
+    <th>link</th>
+    <th>added</th>
+    <th>tag</th>
+    <% if current_user.admin? %>
+      <th>actions</th>
+    <% end %>
+  </tr>
+  <%=render partial: 'resource', collection:@resources %>
+</table>
+
+<div class="apple_pagination">
+  <%= will_paginate %>
+</div>
+
+</div>
+

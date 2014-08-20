@@ -14,7 +14,17 @@ gem 'foundation-rails'
 gem 'protected_attributes'
 gem 'will_paginate'
 
-gem 'annotate', group: :development
+group :development do
+  gem 'annotate'
+  gem "pry", '0.10.0'
+  gem 'pry-remote'
+  gem 'pry-nav'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+end
+
+gem 'carrierwave', '0.10.0'
+gem "rmagick", "2.13.3"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
