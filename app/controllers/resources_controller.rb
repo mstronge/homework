@@ -24,7 +24,7 @@ class ResourcesController < ApplicationController
 
   def destroy
     if Resource.find(params[:id]).destroy
-      render js: "$('#resource_#{params[:id]}').remove()" #$('#resource_#{params[:id]}').destroy()"
+      render js: "$('#resource_#{params[:id]}').remove()" 
     else
       redirect_to resources_path, alert: "Resource wasn't successfully destroyed!"  
     end

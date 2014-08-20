@@ -12,7 +12,7 @@
     <td>
       <% if resource.tag != 'other' %>
         <%= resource.tag %>
-      <% else %>
+      <% elsif !resource.attachment.content_type.nil? %>
         <%= resource.attachment.content_type %>
       <% end %>
     </td>
