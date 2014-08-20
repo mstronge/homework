@@ -11,8 +11,11 @@
 #
 
 class User < ActiveRecord::Base
+
+	has_one :user
+	
 	attr_accessor :password
-	attr_accessible :name, :email, :password, :password_confirmation
+	attr_accessible :name, :email, :password, :password_confirmation, :role
 	mount_uploader :resource, ResourceUploader
 
 

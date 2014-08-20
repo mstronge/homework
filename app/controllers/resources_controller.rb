@@ -14,7 +14,7 @@ class ResourcesController < ApplicationController
       flash[:success] = "Resource with id=#{@resource.id} was successfully created."
     else
       errors_message = "Resource wasn't created! \n\n ERRORS: "
-      @resource.errors.messages.each { |k,v| errors_message += "; #{k.to_s} #{v}" }
+      @resource.errors.messages.each { |k,v| errors_message += " #{k.to_s} #{v};" }
       flash[:alert] = errors_message
     end
 
