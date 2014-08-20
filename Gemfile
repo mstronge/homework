@@ -13,7 +13,7 @@ gem 'foundation-rails'
 gem 'protected_attributes'
 gem 'will_paginate'
 
-group :production
+group :production do
   gem 'pg'
 end
 
