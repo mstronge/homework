@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     @user.admin = false
-    binding.pry
+    #binding.pry
     if @user.save
       flash[:success] = "Thank you for signing up, your teacher will be in touch."
       redirect_to @user
