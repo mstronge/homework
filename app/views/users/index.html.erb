@@ -1,32 +1,28 @@
 <% if current_user.admin? %>
-
-<div id="list-users" class="large-12 columns">
-
-<h2>Administration</h2>
-<h4>Listing all users</h4>
-
-<table width="100%" class="users">
-
-<tr>
-<th>Name</th>
-<th>Email Address</th>
-<th>Actions</th>
-</tr>
-
-<% @users.each do |user| %>
-<tr>
-<td><%= user.name %></td>
-<td><%= user.email %></td>
-<td><%= link_to "Edit", edit_user_path(user.id) %> | <%= link_to "Delete",  user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-</tr>
-<% end %>
-
-</table>
-
-<div class="apple_pagination">
-<%= will_paginate %>
-</div>
-
-</div>
-
+  <div id="list-users" class="large-12 columns">
+    <h2>Administration</h2>
+    <h4>Listing all users</h4>
+    
+    <table width="100%" class="users">
+      <tr>
+        <th>Name</th>
+        <th>Email Address</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+      
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.role %></td>
+          <td><%= link_to "Edit", edit_user_path(user.id) %> | <%= link_to "Delete",  user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </table>
+    
+    <div class="apple_pagination">
+      <%= will_paginate %>
+    </div>
+  </div>
 <% end %>

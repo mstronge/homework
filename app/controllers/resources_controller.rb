@@ -1,6 +1,6 @@
 class ResourcesController < ApplicationController
-  
-  before_filter :admin_user,   :only => [:destroy, :create, :update]
+  before_filter :authenticate, :only => [:index]
+  before_filter :admin_user,   :only => [:destroy, :create]
 
   def index
     @resources = Resource.order(updated_at: :desc).paginate(:page => params[:page], :per_page => 2)
@@ -38,6 +38,10 @@ class ResourcesController < ApplicationController
 
     def admin_user
       redirect_to(root_path) unless current_user.admin?
+    end
+
+    def authenticate
+      deny_access unless signed_in?
     end
 
 end

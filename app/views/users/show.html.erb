@@ -1,48 +1,45 @@
 <div id="account-details" class="large-6 columns">		
-<div class="panel">
+	<div class="panel">
+		<h2>Your account details</h2>
+		
+		<table width="100%">
+			<tr>
+				<td><strong>Name:</strong></td>
+				<td><%= current_user.name %></td>
+			</tr>
 
-<h2>Your account details</h2>
+			<tr>
+				<td><strong>Email:</strong></td>
+				<td><%= current_user.email %></td>
+			</tr>
 
+			<tr>
+				<td><strong>Password:</strong></td>
+				<td>&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</td>
+			</tr>
 
-<table width="100%">
-
-	<tr>
-		<td><strong>Name:</strong></td>
-		<td><%= current_user.name %></td>
-	</tr>	
-	<tr>
-		<td><strong>Email:</strong></td>
-		<td><%= current_user.email %></td>
-	</tr>
-	<tr>
-		<td><strong>Password:</strong></td>
-		<td>&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</td>
-	</tr>
-	<tr>
-		<td><strong>Account type:</strong></td>
-		<td><%= current_user.role %></td>
-	</tr>
-
-	<tr><td colspan="2"><%= link_to "Update your details", edit_user_path(current_user.id), :class => "success button radius" %></td></tr>	
-</table>
-
-</div>
+			<tr>
+				<td><strong>Account type:</strong></td>
+				<td><%= current_user.role %></td>
+			</tr>
+			
+			<tr>
+				<td colspan="2">
+					<%= link_to "Update your details", edit_user_path(current_user.id), :class => "success button radius" %>
+				</td>
+			</tr>	
+		</table>
+	</div>
 </div>
 
 <div id="activity-feed" class="large-6 columns">		
+	<div class="panel disabled">
+		<h2>Billing Information</h2>
+		<div data-alert class="alert-box secondary radius">Billing is currently in development.</div>
+	</div>
 
-
-<div class="panel disabled">
-<h2>Billing Information</h2>
-<div data-alert class="alert-box secondary radius">
-  Billing is currently in development.
-</div>
-</div>
-
-<div class="panel">
-
-<h2>Latest activity</h2>
-<p>No activity found</p>
-
-</div>
+	<div class="panel">
+		<h2>Latest activity</h2>
+		<p>No activity found</p>	
+	</div>
 </div>

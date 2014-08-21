@@ -1,34 +1,25 @@
 <div id="account-details" class="large-6 columns radius">
-<div class="panel">
-<h2>Edit account information</h2>
+  <div class="panel">
+    <h2>Edit account information</h2>
+    <%= form_for(@user) do |f| %>
+      <%= render 'fields', :f => f %>
 
-<%= form_for(@user) do |f| %>
-<%= render 'fields', :f => f %>
-
-<div class="field-item">
-<%= f.submit "Submit Changes", :class => "success button radius" %>
-<%= link_to "Cancel changes", user_path, :class => "cancel" %>
-</div>
-
-<% end %>
-
-</div>
+      <div class="field-item">
+        <%= f.submit "Submit Changes", :class => "success button radius" %>
+        <%= link_to "Cancel changes", user_path, :class => "cancel" %>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <div id="activity-feed" class="large-6 columns">		
+  <div class="panel disabled">
+    <h2>Billing Information</h2>
+    <div data-alert class="alert-box secondary radius">Billing is currently in development.</div>
+  </div>
 
-
-<div class="panel disabled">
-<h2>Billing Information</h2>
-<div data-alert class="alert-box secondary radius">
-  Billing is currently in development.
-</div>
-</div>
-
-<div class="panel">
-
-<h2>Latest activity</h2>
-<p>No activity found</p>
-
-</div>
+  <div class="panel">
+    <h2>Latest activity</h2>
+    <p>No activity found</p>
+  </div>
 </div>

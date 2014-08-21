@@ -1,44 +1,34 @@
 <div id="signup-panel" class="large-8 columns large-centered radius text-center">
-<div class="panel">
-<h1>Login</h1>
-<p>Fill in your username and password below to login.</p>
+  <div class="panel">
+    <h1>Login</h1>
+    <p>Fill in your username and password below to login.</p>
+    <%= form_for(:session, :url => sessions_path) do |f| %>
 
-<%= form_for(:session, :url => sessions_path) do |f| %>
+      <div class="row">
+        <div class="large-8 columns large-centered">
+          <div class="field-item">
+            <%= f.label :email %><br />
+            <%= f.text_field :email %>
+          </div>
 
-<div class="row">
+          <div class="field-item">
+            <%= f.label :password %><br />
+            <%= f.password_field :password %>
+          </div>
+        </div>
 
-<div class="large-8 columns large-centered">
+        <div class="field-item">
+          <%= f.submit "Login",  :class => "success button radius" %>
+        </div>
 
-<div class="field-item">
-<%= f.label :email %><br />
-<%= f.text_field :email %>
-</div>
+        <hr>
 
-<div class="field-item">
-<%= f.label :password %><br />
-<%= f.password_field :password %>
-</div>
-
-</div>
-
-<div class="field-item">
-<%= f.submit "Login",  :class => "success button radius" %>
-</div>
-
-<hr>
-
-<div class="large-6 columns large-centered text-center">
-<div class="field-item">
-<p>Not registered? <%= link_to "Signup", signup_path %> </p>
-</div>
-</div>
-
-
-
-</div>
-
-
-<% end %>
-
-</div>
+        <div class="large-6 columns large-centered text-center">
+          <div class="field-item">
+            <p>Not registered? <%= link_to "Signup", signup_path %> </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

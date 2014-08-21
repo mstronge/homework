@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :authenticate, :only => [:index, :edit, :update, :show]
-  before_filter :correct_user, :only => [:edit, :update, :show]
+  before_filter :authenticate, :only => [:index]
+  before_filter :correct_user, :only => [:show, :edit, :update]
   before_filter :admin_user,   :only => :destroy
 
   def index
@@ -11,15 +11,13 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @title = @user.name
-    @current_user = @user
   end
 
   def new
     if signed_in?
       redirect_to root_path
-  	flash[:success] = "You are already signed in."
+      flash[:success] = "You are already signed in."
     end
-
     @title = "Sign up"
     @user = User.new
   end
@@ -27,10 +25,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     @user.admin = false
-    #binding.pry
     if @user.save
-      flash[:success] = "Thank you for signing up, your teacher will be in touch."
-      redirect_to @user
+      flash[:success] = "Thank you, #{@user.name}, for signing up, your teacher will be in touch."
+      redirect_to root_path
     else
       @title = "Sign up"
       render 'new'
@@ -53,8 +50,9 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    @name_deleted_user = User.find(params[:id]).name
     User.find(params[:id]).destroy
-    redirect_to users_path, :flash => { :success => "User has been deleted."}
+    redirect_to users_path, :flash => { :alert => "User #{@name_deleted_user} has been deleted."}
   end
 
   private
@@ -70,8 +68,8 @@ class UsersController < ApplicationController
     end
 
     def admin_user
-      user = User.find(params[:id])
-      redirect_to(root_path) if !current_user.admin? || current_user?(user)
+      @user = User.find(params[:id])
+      redirect_to(root_path) if !current_user.admin? || current_user?(@user)
     end
 
 end

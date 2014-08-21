@@ -1,66 +1,42 @@
 <header>
-<div class="row">
-<div class="large-4 columns">
+  <div class="row">
+    <div class="large-4 columns">
+      <%= link_to logo, root_path %>
+    </div>
 
-<%= link_to logo, root_path %>
+    <div id="topnav" class="large-8 columns text-right">
+      <%= link_to "Home", root_path %> | <%= link_to "About", about_path %>  | <%= link_to "Contact", contact_path %> 
+      <br>
+      <% if signed_in? %>
+        <%= link_to '<i class="fi-torso"></i> Logout'.html_safe , logout_path , :class => "success button small radius" %> 
+      <% else %>
+        <%= link_to '<i class="fi-torso"></i> Login'.html_safe , login_path , :class => "success button small radius" %> 
+      <% end %>
+    </div>
 
-</div>
+    <% if signed_in? %>
+      <nav>
+        <div class="large-12 columns">
+          <div id="nav">
+            <h5>Welcome <%= current_user.name %></h5>
+            <a href="#">My Homework Diary</a>
+            <a href="#">My Lesson Timetable</a>
+            <%= link_to 'Resource Area', resources_path %>
+            <%= link_to "Account Details", current_user %>
+          </div>
+        </div>
+      </nav>
 
-<div id="topnav" class="large-8 columns text-right">
-
-<%= link_to "Home", root_path %> | <%= link_to "About", about_path %>  | <%= link_to "Contact", contact_path %> 
-
-<br>
-
-<% if signed_in? %>
-
-<%= link_to '<i class="fi-torso"></i> Logout'.html_safe , logout_path , :class => "success button small radius" %> 
-
-<% else %>
-
-<%= link_to '<i class="fi-torso"></i> Login'.html_safe , login_path , :class => "success button small radius" %> 
-
-<% end %>
-
-</div>
-
-<% if signed_in? %>
-
-<nav>
-
-<div class="large-12 columns">
-<div id="nav">
-	<h5>Welcome <%= current_user.name %></h5>
-
-	<a href="#">My Homework Diary</a>
-	<a href="#">My Lesson Timetable</a>
-	<%= link_to 'Resource Area', resources_path %>
-	<%= link_to "Account Details", current_user %>
-
-</div>
-</div>
-
-</nav>
-
-<% if current_user.admin? %>
-
-<div class="large-12 columns">
-<div id="admin-nav">
-	<h5>Logged in as Admin</h5>
-
-	<%= link_to "Edit users", users_path %>
-	<a href="#">Global settings</a>
-	<a href="#">Assign Parents</a>
-
-</div>
-</div>
-
-<% end %>
-
-
-<% end %>
-
-
-</div>
-
+      <% if current_user.admin? %>
+        <div class="large-12 columns">
+          <div id="admin-nav">
+          	<h5>Logged in as Admin</h5>
+          	<%= link_to "Edit users", users_path %>
+          	<a href="#">Global settings</a>
+          	<a href="#">Assign Parents</a>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 </header>

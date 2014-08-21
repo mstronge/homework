@@ -1,41 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= stylesheet_link_tag    'foundation-icons/foundation-icons', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-<link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title><%= title %></title>
+      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+      <%= stylesheet_link_tag    'foundation-icons/foundation-icons', 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+      <%= csrf_meta_tags %>
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
+  </head>
 
-</head>
-<body>
+  <body>
 
-<%= render 'layouts/header' %>
+    <%= render 'layouts/header' %>
+    <div class="row">
+      <div class="large-12 columns">
+        <% flash.each do |key, value| %>
+          <div data-alert class="alert-box <%= key %> radius text-center">
+            <%= value %>
+          </div>
+        <% end %>
+      </div>
 
-<div class="row">
+      <div class="clear"></div>
 
-<div class="large-12 columns">
-	
-<% flash.each do |key, value| %>
+      <%= yield %>
 
-<div data-alert class="alert-box <%= key %> radius text-center">
-  <%= value %>
-</div>
-
-<% end %>
-
-</div>
-
-<div class="clear"></div>
-
-<%= yield %>
-
-<%= debug(params) if Rails.env.development? %>
-
-</div>
-
-
-</body>
+      <%= debug(params) if Rails.env.development? %>
+    </div>
+  </body>
 </html>

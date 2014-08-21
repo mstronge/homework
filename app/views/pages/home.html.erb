@@ -1,10 +1,8 @@
 <div id="signup-panel" class="large-8 columns large-centered text-center">
-<div class="panel radius">
-
-<h1>Register to access your control panel</h1>
-
-<%= link_to "Signup", signup_path, :class => "success button radius" %>
-
-</div>
-
+  <div class="panel radius">
+    <% if !signed_in? %>
+      <h1>Register to access your control panel</h1>
+      <%= link_to "Signup", signup_path, :class => "success button radius" %>
+    <% end %>
+  </div>
 </div>
