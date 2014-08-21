@@ -23,6 +23,6 @@
 <% if !signed_in? || !current_user.admin? %>
   <div class="field-item">
     <%= f.label :role %>
-    <%= f.select(:role, options_for_select(['','student', 'parent'])) %>
+    <%= select('user', 'role', options_for_select(['','student', 'parent'],f.object.role)) %>
   </div>
 <% end %>

@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
 	email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-	before_validation :set_role_for_admin
+	before_validation :set_role_for_admin, :student_can_not_change_role
 	
 	validates :role, inclusion: { in: %w(student parent teacher) } 
 
@@ -22,8 +22,12 @@ class User < ActiveRecord::Base
 
 	before_save :encrypt_password
 
+	def student_can_not_change_role
+		self.role = role_was if role_was == 'student' 
+	end
+
 	def set_role_for_admin
-		self.role = 'teacher' if self.admin
+		self.role = 'teacher' if admin
 	end
 
 	def has_password?(submitted_password)
