@@ -1,12 +1,15 @@
 class User < ActiveRecord::Base
 	
+	has_many :students, class_name: "User", foreign_key: "parent_id"
+	belongs_to :parent, class_name: "User"
+
 	attr_accessor :password
 
-	attr_accessible :name, :email, :password, :password_confirmation, :role
+	attr_accessible :name, :email, :password, :password_confirmation, :role, :parent_id
 
 	email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-	before_validation :set_role_for_admin, :student_can_not_change_role
+	before_validation :set_role_for_admin
 	
 	validates :role, inclusion: { in: %w(student parent teacher) } 
 
@@ -18,17 +21,12 @@ class User < ActiveRecord::Base
 
 	validates :password, :presence => true,
 			   :confirmation => true,
-			   :length => { :within => 6..40 }
+			   :length => { :within => 6..40 }, if: :new_record_or_update_password?
 
 	before_save :encrypt_password
 
-	def student_can_not_change_role
-		self.role = role_was if role_was == 'student' 
-	end
-
-	def set_role_for_admin
-		self.role = 'teacher' if admin
-	end
+	scope :only_students, -> { where role: 'student'}
+	scope :only_parents, -> { where role: 'parent'}
 
 	def has_password?(submitted_password)
 		encrypted_password == encrypt(submitted_password)
@@ -49,9 +47,17 @@ class User < ActiveRecord::Base
 
 	private
 
+		def new_record_or_update_password?
+			new_record? || self.password.present? || self.admin
+		end
+
+		def set_role_for_admin
+			self.role = 'teacher' if admin
+		end
+
 		def encrypt_password
 			self.salt = make_salt if new_record?
-			self.encrypted_password = encrypt(self.password)
+			self.encrypted_password = encrypt(self.password) if self.password.present?
 		end
 
 		def encrypt(string)

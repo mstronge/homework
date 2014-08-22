@@ -1,0 +1,35 @@
+<% if current_user.admin? %>
+  <div id="list-users" class="large-12 columns">
+    <h2>Administration</h2>
+    <h4>Listing all students</h4>
+    
+    <table width="100%" class="users">
+      <% @assign_parents.each do |user| %>
+        <tr>
+          <%= form_for(user, remote: true) do |f| %>
+            <th>
+              <div class="field-item">
+                <label><%= f.object.name %></label>
+              </div>
+            <th>
+            <th>
+              <div class="field-item">
+                <%= f.label :parent %>
+                <%= collection_select(:user, :parent_id, @parents, :id, :name, { include_blank: true, selected: f.object.parent_id }) %>
+              </div>
+            <th>
+            <th>
+              <div class="field-item">
+                <%= f.submit "Save assign" %>
+              </div>
+            <th>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+    
+    <div class="apple_pagination">
+      <%= will_paginate %>
+    </div>
+  </div>
+<% end %>

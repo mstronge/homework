@@ -6,17 +6,24 @@
     <table width="100%" class="users">
       <tr>
         <th>Name</th>
-        <th>Email Address</th>
-        <th>Role</th>
-        <th>Actions</th>
+        <th>role</th>
+        <th>parent</th>
+        <th>email</th>
+        <th>actions</th>
       </tr>
       
       <% @users.each do |user| %>
         <tr>
           <td><%= user.name %></td>
-          <td><%= user.email %></td>
           <td><%= user.role %></td>
-          <td><%= link_to "Edit", edit_user_path(user.id) %> | <%= link_to "Delete",  user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= user.parent.name if user.parent.present? %></td>
+          <td><%= user.email %></td>
+          <td>
+            <%= link_to "Edit", edit_user_path(user.id) %> |
+            <% if user != current_user %>
+              <%= link_to "Delete",  user, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </table>

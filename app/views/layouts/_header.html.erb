@@ -30,10 +30,10 @@
       <% if current_user.admin? %>
         <div class="large-12 columns">
           <div id="admin-nav">
-          	<h5>Logged in as Admin</h5>
-          	<%= link_to "Edit users", users_path %>
-          	<a href="#">Global settings</a>
-          	<a href="#">Assign Parents</a>
+            <h5>Logged in as Admin</h5>
+            <%= link_to "Edit users", admin_users_path %>
+            <a href="#">Global settings</a>
+            <%= link_to 'Assign Parents', admin_assign_parents_path %>
           </div>
         </div>
       <% end %>

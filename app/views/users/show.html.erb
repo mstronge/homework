@@ -1,31 +1,40 @@
 <div id="account-details" class="large-6 columns">		
 	<div class="panel">
-		<h2>Your account details</h2>
+		<h2>
+			<% if  @user == current_user %>
+				Your accaunt details
+			<% else %>
+				Account details
+			<% end %>
+		</h2>
 		
 		<table width="100%">
 			<tr>
 				<td><strong>Name:</strong></td>
-				<td><%= current_user.name %></td>
+				<td><%= @user.name %></td>
 			</tr>
 
 			<tr>
 				<td><strong>Email:</strong></td>
-				<td><%= current_user.email %></td>
+				<td><%= @user.email %></td>
 			</tr>
 
-			<tr>
-				<td><strong>Password:</strong></td>
-				<td>&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</td>
-			</tr>
 
 			<tr>
 				<td><strong>Account type:</strong></td>
-				<td><%= current_user.role %></td>
+				<td><%= @user.role %></td>
 			</tr>
+			
+			<% if !@user.parent.nil? %>
+				<tr>
+					<td><strong>Parent:</strong></td>
+					<td><%= @user.parent.name %></td>
+				</tr>
+			<% end %>
 			
 			<tr>
 				<td colspan="2">
-					<%= link_to "Update your details", edit_user_path(current_user.id), :class => "success button radius" %>
+					<%= link_to "Update these details", edit_user_path(@user.id), :class => "success button radius" %>
 				</td>
 			</tr>	
 		</table>

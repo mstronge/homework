@@ -20,9 +20,15 @@
   <%= f.password_field :password_confirmation %>
 </div>
 
-<% if !signed_in? || !current_user.admin? %>
+<% if !f.object.admin? %>
   <div class="field-item">
     <%= f.label :role %>
     <%= select('user', 'role', options_for_select(['','student', 'parent'],f.object.role)) %>
+  </div>
+<% end %>
+<% if signed_in? && current_user.admin? && !f.object.admin? %>
+  <div class="field-item">
+    <%= f.label :parent %>
+    <%= collection_select(:user, :parent_id, @parents, :id, :name, { include_blank: true, selected: f.object.parent_id }) %>
   </div>
 <% end %>

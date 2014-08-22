@@ -1,15 +1,14 @@
 class UsersController < ApplicationController
   before_filter :authenticate, :only => [:index]
-  before_filter :correct_user, :only => [:show, :edit, :update]
+  before_filter :correct_user_or_admin, :only => [:show, :edit, :update]
   before_filter :admin_user,   :only => :destroy
 
   def index
-    @users = User.paginate(:page => params[:page], :per_page => 5)
+    @users = User.paginate(:page => params[:page], :per_page => 10)
     @title = "All users"
   end
 
   def show
-    @user = User.find(params[:id])
     @title = @user.name
   end
 
@@ -35,23 +34,38 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    @parents = User.only_parents
     @title = "Edit account details"
   end
 
   def update
-    @user = User.find(params[:id])    
-    if @user.update_attributes(params[:user])
-      redirect_to @user, :flash => { :success => "Account Details have been changed."}
-    else
-      @title = "Edit account details"
-      render 'edit'
+    @parents = User.only_parents
+
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        format.html { redirect_to @user, :flash => { :success => "Account Details have been changed."} }
+        format.js { render js: 'alert("sdf")' }
+      else
+        format.html { render action: 'edit' }
+        #format.json { render json: @mailing.errors, status: :unprocessable_entity }
+      end
     end
+
+
+
+    #if @user.update_attributes(params[:user])
+      #respond_to do |format|
+      #redirect_to @user, :flash => { :success => "Account Details have been changed."}
+    #else
+      #@title = "Edit account details"
+      #render 'edit'
+    #end
+
   end
 
   def destroy
-    @name_deleted_user = User.find(params[:id]).name
-    User.find(params[:id]).destroy
+    @name_deleted_user = @user.name
+    @user.destroy
     redirect_to users_path, :flash => { :alert => "User #{@name_deleted_user} has been deleted."}
   end
 
@@ -61,10 +75,12 @@ class UsersController < ApplicationController
       deny_access unless signed_in?
     end
 
-    def correct_user
+    def correct_user_or_admin
       @user = User.find(params[:id])
-      redirect_to(root_path) unless current_user?(@user)
-      flash[:alert] = "You are not authorised to view this page."  unless current_user?(@user)
+      unless current_user?(@user) || current_user.admin?
+        redirect_to(root_path)
+        flash[:alert] = "You are not authorised to view this page."
+      end
     end
 
     def admin_user
