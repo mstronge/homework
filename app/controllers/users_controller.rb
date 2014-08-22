@@ -40,27 +40,19 @@ class UsersController < ApplicationController
 
   def update
     @parents = User.only_parents
+    
+    params[:user].delete(:parent_id) unless current_user.admin? 
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, :flash => { :success => "Account Details have been changed."} }
-        format.js { render js: 'alert("sdf")' }
+        format.html { redirect_to @user, :flash => { :success => "Account details have been changed." } }
+        format.js { render js: 'alert("Account details have been changed.")' }
       else
-        format.html { render action: 'edit' }
-        #format.json { render json: @mailing.errors, status: :unprocessable_entity }
+        @title = "Edit account details"
+        format.html { render 'edit' }
+        format.js { render js: "alert('Assign parent failed!')" }
       end
     end
-
-
-
-    #if @user.update_attributes(params[:user])
-      #respond_to do |format|
-      #redirect_to @user, :flash => { :success => "Account Details have been changed."}
-    #else
-      #@title = "Edit account details"
-      #render 'edit'
-    #end
-
   end
 
   def destroy

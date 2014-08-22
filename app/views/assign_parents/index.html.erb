@@ -4,26 +4,23 @@
     <h4>Listing all students</h4>
     
     <table width="100%" class="users">
-      <% @assign_parents.each do |user| %>
+      <tr>
+        <th>Student</th>
+        <th>Parent</th>
+      </tr>
+      <% @students.each do |student| %>
         <tr>
-          <%= form_for(user, remote: true) do |f| %>
-            <th>
-              <div class="field-item">
-                <label><%= f.object.name %></label>
-              </div>
-            <th>
-            <th>
-              <div class="field-item">
-                <%= f.label :parent %>
-                <%= collection_select(:user, :parent_id, @parents, :id, :name, { include_blank: true, selected: f.object.parent_id }) %>
-              </div>
-            <th>
-            <th>
-              <div class="field-item">
-                <%= f.submit "Save assign" %>
-              </div>
-            <th>
-          <% end %>
+          <td><%= student.name %></td>
+          <td>
+            <%= form_for(student, remote: true) do |f| %>
+                <div class="field-item">
+                  <%= collection_select(:user, :parent_id, @parents, :id, :name, { include_blank: true, selected: f.object.parent_id }) %>
+                </div>
+                <div class="field-item">
+                  <%= f.submit "Assign" %>
+                </div>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </table>
