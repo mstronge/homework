@@ -1,5 +1,7 @@
 class Resource < ActiveRecord::Base
   
+  has_and_belongs_to_many :lessons
+
   VALID_HTTP_REGEX = /\A(http:\/\/)/i
 
   attr_accessible :attachment, :attachment_cache, :tag, :link

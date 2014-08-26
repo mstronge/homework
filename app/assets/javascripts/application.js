@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require foundation
 //= require_tree .
+//= require bootstrap-datepicker
 $(document).foundation();

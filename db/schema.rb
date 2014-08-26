@@ -11,7 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140822090011) do
+ActiveRecord::Schema.define(version: 20140826095901) do
+
+  create_table "lessons", force: true do |t|
+    t.string   "name"
+    t.text     "must_be_practised"
+    t.text     "how_to_practise"
+    t.integer  "user_id"
+    t.date     "date_start"
+    t.date     "date_finish"
+    t.string   "status"
+    t.string   "raiting"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "lessons", ["user_id"], name: "index_lessons_on_user_id"
+
+  create_table "lessons_resources", id: false, force: true do |t|
+    t.integer "lesson_id"
+    t.integer "resource_id"
+  end
+
+  add_index "lessons_resources", ["lesson_id"], name: "index_lessons_resources_on_lesson_id"
+  add_index "lessons_resources", ["resource_id"], name: "index_lessons_resources_on_resource_id"
 
   create_table "resources", force: true do |t|
     t.datetime "created_at"

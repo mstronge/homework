@@ -31,9 +31,10 @@
         <div class="large-12 columns">
           <div id="admin-nav">
             <h5>Logged in as Admin</h5>
+            <%= link_to "Lessons for students", admin_lessons_path %>
             <%= link_to "Edit users", admin_users_path %>
-            <a href="#">Global settings</a>
             <%= link_to 'Assign Parents', admin_assign_parents_path %>
+            <a href="#">Global settings</a>
           </div>
         </div>
       <% end %>

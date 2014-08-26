@@ -26,6 +26,7 @@
     <%= select('user', 'role', options_for_select(['','student', 'parent'],f.object.role)) %>
   </div>
 <% end %>
+
 <% if signed_in? && current_user.admin? && !f.object.admin? %>
   <div class="field-item">
     <%= f.label :parent %>

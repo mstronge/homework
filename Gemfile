@@ -24,6 +24,8 @@ group :development do
 end
 
 gem 'carrierwave', '0.10.0'
+gem 'bootstrap-datepicker-rails'
+
 #gem "rmagick", "2.13.3"
 
 # Use ActiveModel has_secure_password
