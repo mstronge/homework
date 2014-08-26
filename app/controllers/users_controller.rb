@@ -40,13 +40,13 @@ class UsersController < ApplicationController
 
   def update
     @parents = User.only_parents
-    
-    params[:user].delete(:parent_id) unless current_user.admin? 
+    params[:user].delete(:parent_id) if !current_user.admin? 
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, :flash => { :success => "Account details have been changed." } }
-        format.js { render js: 'alert("Account details have been changed.")' }
+        #format.js { render js: 'alert("Account details have been changed.")' }
+        format.js { render js: "$('#row_student_#{params[:id]}').remove()"  }
       else
         @title = "Edit account details"
         format.html { render 'edit' }

@@ -23,9 +23,12 @@ class User < ActiveRecord::Base
 			   :confirmation => true,
 			   :length => { :within => 6..40 }, if: :new_record_or_update_password?
 
+	validate :parent_id_only_for_student
+
 	before_save :encrypt_password
 
-	scope :only_students, -> { where role: 'student'}
+	scope :only_students, -> { where role: 'student' }
+	scope :only_students_without_parent, -> { where role: 'student', parent: nil }
 	scope :only_parents, -> { where role: 'parent'}
 
 	def has_password?(submitted_password)
@@ -46,6 +49,10 @@ class User < ActiveRecord::Base
 	end
 
 	private
+
+		def parent_id_only_for_student
+			errors.add(:role, "This role can not have parent!") if parent_id.present? && role != 'student'
+		end
 
 		def new_record_or_update_password?
 			new_record? || self.password.present? || self.admin
