@@ -25,6 +25,7 @@
         </div>
         <script type="text/javascript">
           $('.input-daterange').datepicker({
+            format: "dd/mm/yyyy",
             startDate: "today",
             calendarWeeks: true,
             autoclose: true,
@@ -44,12 +45,40 @@
       </div>
 
       <div class="field-item">
-        <%= f.label :resources %>
-        <% @resources.each do |resource| %>
-          <tr>
-            <td><%= check_box_tag "lesson[resource_ids][]", resource.id %></td>
-          </tr>
-        <% end %>
+        <table>
+          <label>Resources:</label>
+          <thead>
+            <tr>
+              <td>Id</td>
+              <td>link</td>
+              <td>tag</td>
+              <td>joined</td>
+            <tr>
+          </thead>
+          <tbody>
+            <% @resources.each do |resource| %>
+              <tr>
+                <td><%= resource.id %></td>
+                <td>     
+                  <% if !resource.attachment.file.nil? %>
+                    <%= link_to resource.attachment.file.original_filename, resource.attachment.url %></td>
+                  <% end %>
+                  <% if !resource.link.nil? %>
+                    <%= link_to resource.link, resource.link %></td>
+                  <% end %>
+                </td>
+                <td>
+                  <% if resource.tag != 'other' %>
+                    <%= resource.tag %>
+                  <% elsif !resource.attachment.content_type.nil? %>
+                    <%= resource.attachment.content_type %>
+                  <% end %>
+                </td>
+                <td><%= check_box_tag "lesson[resource_ids][]", resource.id %></td>
+              </tr>
+            <% end %>
+          <tbody>
+        </table>
       </div>
 
       <div class="field-item">

@@ -1,9 +1,11 @@
 class ResourcesController < ApplicationController
+  helper_method :sort_column, :sort_direction
+
   before_filter :authenticate, :only => [:index]
   before_filter :admin_user,   :only => [:destroy, :create]
 
   def index
-    @resources = Resource.order(updated_at: :desc).paginate(:page => params[:page], :per_page => 2)
+    @resources = Resource.order(sort_column + " " + sort_direction) .paginate(:page => params[:page], :per_page => 10)
     @title = "Resource Area"
   end
 
@@ -42,6 +44,14 @@ class ResourcesController < ApplicationController
 
     def authenticate
       deny_access unless signed_in?
+    end
+
+    def sort_column
+      (Resource.column_names).include?(params[:sort]) ? params[:sort] : "id"
+    end
+  
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
     end
 
 end

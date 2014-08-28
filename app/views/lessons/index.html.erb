@@ -1,8 +1,78 @@
 <div id="list-lessons" class="large-12 columns">
+  <%= link_to "Create new lesson", new_lesson_path %>
+  <h3>Existing lessons</h3>
+  <%= form_tag lessons_path, :method => 'get' do %>
+    <table width="100%" id="search_lessons">
+      <tr>
+        <th>Student</th>
+        <th>date start</th>
+        <th>date finish</th>
+        <th>status</th>
+        <th>raiting</th>
+      </tr>
+      <tr>
+        <td>
+          <%= collection_select(:lesson, :user_id, @students, :id, :name, { include_blank: true, selected: params[:user_id]}, name: "user_id") %>
+        </td>
+        <div class="input-daterange input-group" id="datepicker">
+          <div class="input-daterange" id="datepicker">
+            <td class="input-daterange"><%= text_field_tag "date_start", params[:date_start] %></td>
+            <td class="input-daterange"><%= text_field_tag "date_finish", params[:date_finish] %></td>
+            <script type="text/javascript">
+            $('.input-daterange').datepicker({
+              format: "dd/mm/yyyy",
+              calendarWeeks: true,
+              autoclose: true,
+              todayHighlight: true
+            });
+            </script>
+          </div>
+        </div>
+        <td>
+          <%= select_tag("status", options_for_select(['','new','in progress', 'completed'], params[:status])) %>
+        </td>
+        <td>
+          <%= select_tag('raiting', options_for_select(['','normal','high', 'low'], params[:raiting])) %>
+        </td>
+      <tr>
+    </table>
+    <p>
+      <%= submit_tag "Search lessons", :name => nil %>
+    </p>
+  <% end %>
 
-<%= link_to "Create new lesson", new_lesson_path %>
+  <table width="100%" class="lessons">
+    <tr>
+      <th><%= sortable "lessons.id", "Id" %></th>
+      <th><%= sortable "lessons.name", "title" %></th>
+      <th><%= sortable "users.name", "student" %></th>
+      <th><%= sortable "date_start"  %></th>
+      <th><%= sortable "date_finish"  %></th>
+      <th><%= sortable "status"  %></th>
+      <th><%= sortable "raiting"  %></th>
+      <th><%= "action"  %></th>
+    </tr>
 
-<h3>Existing lessons</h3>
+    <% @lessons.each do |lesson| %>
+      <tr id="lesson_<%= lesson.id %>">
+        <td><%= lesson.id %></td>
+        <td><%= lesson.name %></td>
+        <td><%= lesson.user.name %></td>
+        <td><%= lesson.date_start %></td>
+        <td><%= lesson.date_finish %></td>
+        <td><%= lesson.status %></td>
+        <td><%= lesson.raiting %></td>
+        <td>
+          <%= link_to "Show", "#" #lesson_path(lesson.id) 
+          %> |
+          <%= link_to "Delete",  lesson, method: :delete, remote: :true, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
 
+  <div class="apple_pagination">
+    <%= will_paginate %>
+  </div>
 </div>
 

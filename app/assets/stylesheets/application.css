@@ -254,3 +254,21 @@ header {
     color: black; }
     .apple_pagination a:hover, .apple_pagination a:focus {
       text-decoration: underline; }
+
+th .current {
+  padding-right: 12px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+th .asc {
+  background-image: url(/assets/up_arrow.png);
+}
+
+th .desc {
+  background-image: url(/assets/down_arrow.png);
+}
+
+#search_lessons input {
+	margin: 0;
+}

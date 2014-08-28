@@ -25,6 +25,7 @@ end
 
 gem 'carrierwave', '0.10.0'
 gem 'bootstrap-datepicker-rails'
+#gem "date_validator", "0.7.0"
 
 #gem "rmagick", "2.13.3"
 

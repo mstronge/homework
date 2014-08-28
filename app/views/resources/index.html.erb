@@ -13,14 +13,13 @@
   </div>
 <% end %>
 
-<h3>Available resources</h3>
-
+<h3 id="resources">Available resources</h3>
 <table width="100%" class="users">
   <tr>
-    <th>Id</th>
+    <th><%= sortable "id", "Id", "resources" %></th>
     <th>link</th>
-    <th>added</th>
-    <th>tag</th>
+    <th><%= sortable "created_at", "added", "resources" %></th>
+    <th><%= sortable "tag", "tag", "resources" %></th>
     <% if current_user.admin? %>
       <th>actions</th>
     <% end %>
