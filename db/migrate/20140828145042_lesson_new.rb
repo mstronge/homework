@@ -1,5 +1,7 @@
-class Lessons < ActiveRecord::Migration
+class LessonNew < ActiveRecord::Migration
+  
   def change
+   
     create_table :lessons do |t|
       t.string :name
       t.text :must_be_practised
@@ -11,5 +13,12 @@ class Lessons < ActiveRecord::Migration
       t.string :raiting
       t.timestamps
     end
+
+    create_table :lessons_resources, id: false do |t|
+      t.belongs_to :lesson, index: true
+      t.belongs_to :resource, index: true
+    end
+
   end
+  
 end

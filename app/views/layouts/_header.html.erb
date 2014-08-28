@@ -19,10 +19,12 @@
         <div class="large-12 columns">
           <div id="nav">
             <h5>Welcome <%= current_user.name %></h5>
-            <a href="#">My Homework Diary</a>
-            <a href="#">My Lesson Timetable</a>
-            <%= link_to 'Resource Area', resources_path %>
-            <%= link_to "Account Details", current_user %>
+            <% if !current_user.admin? %>
+              <%= link_to 'My Homework Diary', diary_user_path(current_user) %>
+              <a href="#">My Lesson Timetable</a>
+              <%= link_to 'Resource Area', resources_path %>
+              <%= link_to "Account Details", current_user %>
+            <% end %>
           </div>
         </div>
       </nav>
@@ -34,6 +36,8 @@
             <%= link_to "Lessons for students", admin_lessons_path %>
             <%= link_to "Edit users", admin_users_path %>
             <%= link_to 'Assign Parents', admin_assign_parents_path %>
+            <%= link_to 'Resource Area', resources_path %>
+            <%= link_to "Account Details", current_user %>
             <a href="#">Global settings</a>
           </div>
         </div>
