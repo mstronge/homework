@@ -2,6 +2,8 @@ class LessonNew < ActiveRecord::Migration
   
   def change
    
+    drop_table :lessons
+
     create_table :lessons do |t|
       t.string :name
       t.text :must_be_practised
