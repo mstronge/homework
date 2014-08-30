@@ -8,14 +8,13 @@ class LessonsController < ApplicationController
     @title = "All lessons"
     @students = User.only_students
     @lessons = Lesson.search(search_params).eager_load(:user).order(sort_column + " " + sort_direction) .paginate(:page => params[:page], :per_page => 10)
-
   end
 
   def new
     @title = "All lessons"
     @lesson = Lesson.new
     @students = User.only_students
-    @resources = Resource.order(updated_at: :desc)
+    @resources = Resource.all
   end
 
   def create
@@ -34,9 +33,24 @@ class LessonsController < ApplicationController
     end
   end
 
+  def update
+    
+    @lesson = Lesson.find(params[:id])
+    if @lesson.update_attributes(lesson_params)
+      flash[:success] = "Lesson with id=#{@lesson.id} was successfully updated."
+      redirect_to diary_user_path(@lesson.user_id, :date => @lesson.date_start)
+    else
+      errors_message = "Lesson wasn't updated! \n\n ERRORS: "
+      @lesson.errors.messages.each { |k,v| errors_message += " #{k.to_s} #{v};" }
+      flash[:alert] = errors_message
+      redirect_to diary_user_path(@lesson.user_id, :date => @lesson.date_start)
+    end
+    
+  end
+
   def destroy
     if Lesson.find(params[:id]).destroy
-      render js: "$('#lesson_#{params[:id]}').remove()" 
+      redirect_to lessons_path(anchor: "lessons")
     else
       redirect_to lessons_path, alert: "Lesson wasn't successfully destroyed!"  
     end
@@ -53,7 +67,7 @@ class LessonsController < ApplicationController
     end
 
     def lesson_params
-      params.require(:lesson).permit(:name,:user_id,:date_start,:date_finish,:must_be_practised,:how_to_practise,:raiting,resource_ids:[])
+      params.require(:lesson).permit(:name,:user_id,:date_start,:date_finish,:must_be_practised,:how_to_practise,:raiting,:status,resource_ids:[])
     end
 
     def sort_column

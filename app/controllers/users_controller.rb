@@ -1,10 +1,12 @@
 class UsersController < ApplicationController
+  helper_method :sort_column, :sort_direction
+
   before_filter :authenticate, :only => [:index]
   before_filter :correct_user_or_admin, :only => [:show, :edit, :update]
-  before_filter :admin_user,   :only => :destroy
+  before_filter :admin_user, :only => :destroy
 
   def index
-    @users = User.paginate(:page => params[:page], :per_page => 10)
+    @users = User.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 10)
     @title = "All users"
   end
 
@@ -45,8 +47,9 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, :flash => { :success => "Account details have been changed." } }
-        #format.js { render js: 'alert("Account details have been changed.")' }
-        format.js { render js: "$('#row_student_#{params[:id]}').remove()"  }
+        if @user.parent_id.present?
+          format.js { render js: "$('#row_student_#{params[:id]}').remove()"  }
+        end
       else
         @title = "Edit account details"
         format.html { render 'edit' }
@@ -56,14 +59,18 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @name_deleted_user = @user.name
-    @user.destroy
-    redirect_to users_path, :flash => { :alert => "User #{@name_deleted_user} has been deleted."}
+    @name_deleted_user = User.find(params[:id]).name
+    if User.find(params[:id]).destroy
+      redirect_to users_path, :flash => { :alert => "User #{@name_deleted_user} has been deleted."}
+    else
+      redirect_to users_path, alert: "User wasn't successfully destroyed!"  
+    end
   end
 
   def diary
     @date = params[:date].present? ? params[:date].to_date : DateTime.now
     @lesson = Lesson.equal_param(user_id: params[:id]).search_date_finish_not_less(@date).search_date_start_not_more(@date).first
+    @resources = Resource.all
   end
 
   private
@@ -82,6 +89,14 @@ class UsersController < ApplicationController
 
     def admin_user
       redirect_to(root_path) if !current_user.admin?
+    end
+
+    def sort_column
+      (User.column_names).include?(params[:sort]) ? params[:sort] : "id"
+    end
+  
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
     end
 
 end

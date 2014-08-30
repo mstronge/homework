@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  *= require bootstrap-datepicker
+ *= require_tree ../../../vendor/assets/stylesheets/.
  */
 
 /*= require foundation */
@@ -271,4 +272,9 @@ th .desc {
 
 #search_lessons input {
 	margin: 0;
+}
+
+.arcticmodal-container table {
+	background: none;
+	border: none;
 }

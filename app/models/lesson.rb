@@ -21,8 +21,14 @@ private
 
   def validate_date
     if date_start.present? && date_finish.present?
-     errors.add(:date_finish," can't be less than date_start") if date_finish < date_start
-     errors.add(:student_or_date," the student has a lesson for this period") if Lesson.equal_param(user_id: self.user_id).search_date_finish_not_less(self.date_start).search_date_start_not_more(self.date_start).size > 0
+      errors.add(:date_finish," can't be less than date_start") if date_finish < date_start
+      check = Lesson.equal_param(user_id: self.user_id).search_date_finish_not_less(self.date_start).search_date_start_not_more(self.date_start).first
+      check_id = if check.present?
+        check.id
+      else 
+        nil
+      end
+     errors.add(:student_or_date," the student has a lesson for this period") if  check_id != self.id
     end
   end
 

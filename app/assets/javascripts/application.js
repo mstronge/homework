@@ -16,4 +16,5 @@
 //= require foundation
 //= require_tree .
 //= require bootstrap-datepicker
+//= require_tree ../../../vendor/assets/javascripts/.
 $(document).foundation();

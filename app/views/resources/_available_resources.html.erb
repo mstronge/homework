@@ -1,0 +1,26 @@
+<table width="100%" class="users" id="<%= local_hash[:table_id] %>">
+  <tr>
+    <% if local_hash[:mode] == "embedded" %>
+
+      <th>Id</td>
+      <th>link</td>
+      <th>tag</td>
+      <th>joined</th>
+
+    <% elsif local_hash[:mode] == "paginate" %>
+
+      <th><%= sortable "id", "Id", "resources" %></th>
+      <th>link</th>
+      <th><%= sortable "created_at", "added", "resources" %></th>
+      <th><%= sortable "tag", "tag", "resources" %></th>
+      <% if current_user.admin? %><th>actions</th><% end %>
+
+    <% end %>
+  </tr>
+
+  <%= render partial: 'resources/resource', collection:@resources, locals:{local_hash: local_hash} %>
+</table>
+
+<% if local_hash[:mode] == "paginate" %>
+  <div class="apple_pagination"><%= will_paginate %></div>
+<% end %>

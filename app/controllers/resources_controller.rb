@@ -5,28 +5,26 @@ class ResourcesController < ApplicationController
   before_filter :admin_user,   :only => [:destroy, :create]
 
   def index
-    @resources = Resource.order(sort_column + " " + sort_direction) .paginate(:page => params[:page], :per_page => 10)
+    @resources = Resource.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 50)
     @title = "Resource Area"
   end
 
   def create
-    @resource = Resource.new(resource_params)
-  
+    @resource = Resource.new(resource_params)  
     if @resource.save
+      redirect_to resources_path(anchor: "resource_#{@resource.id}")
       flash[:success] = "Resource with id=#{@resource.id} was successfully created."
     else
       errors_message = "Resource wasn't created! \n\n ERRORS: "
       @resource.errors.messages.each { |k,v| errors_message += " #{k.to_s} #{v};" }
+      redirect_to resources_path
       flash[:alert] = errors_message
     end
-
-    redirect_to resources_path
-
   end
 
   def destroy
     if Resource.find(params[:id]).destroy
-      render js: "$('#resource_#{params[:id]}').remove()" 
+      redirect_to resources_path(anchor: "resources")
     else
       redirect_to resources_path, alert: "Resource wasn't successfully destroyed!"  
     end

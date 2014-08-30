@@ -1,35 +1,9 @@
 <div id="list-resources" class="panel">
-
-<% if current_user.admin? %>
-  <h3>New resource</h3>
-  <div class="panel">
-    <%= form_for Resource.new do |f| %>
-      <%= f.file_field :attachment %>
-      <%= f.hidden_field :attachment_cache %>
-      <%= label_tag(:remote_link, "Remote link") %>
-      <%= f.text_field :link %>
-      <%= f.submit 'Add new resource' %>
-    <% end %>
-  </div>
-<% end %>
-
-<h3 id="resources">Available resources</h3>
-<table width="100%" class="users">
-  <tr>
-    <th><%= sortable "id", "Id", "resources" %></th>
-    <th>link</th>
-    <th><%= sortable "created_at", "added", "resources" %></th>
-    <th><%= sortable "tag", "tag", "resources" %></th>
-    <% if current_user.admin? %>
-      <th>actions</th>
-    <% end %>
-  </tr>
-  <%=render partial: 'resource', collection:@resources %>
-</table>
-
-<div class="apple_pagination">
-  <%= will_paginate %>
-</div>
-
+  <% mode="paginate" %>
+  <% if current_user.admin? %>
+    <%= render partial: 'new' %>
+  <% end %>
+  <h3 id="resources">Available resources</h3>
+  <%= render partial: 'available_resources', locals:{local_hash: {mode: mode}} %>
 </div>
 

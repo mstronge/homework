@@ -1,104 +1,102 @@
 <div id="list-users" class="large-12 columns">
-  <table width="100%">
-    <tr>
-      <% 9.times do |i| %>
-        <% if (@date-4+i).strftime("%d %b %Y") == DateTime.now.strftime("%d %b %Y") %>
-          <% date_text = "today" %>
-        <% else %>
-          <% date_text = (@date-4+i).strftime("%d %b") %>
-        <% end %>
-        <th>
-          <% if i ==4 %>
-            <h4><%= date_text %></h4>
-          <% else %>
-            <%= link_to  date_text, {:date => (@date-4+i).strftime("%d/%m/%Y") } %>
-          <% end %>
-        </th>
-      <% end %>
-    </tr>
-    <% if @lesson.present? %>
+  
+  <%= render partial: 'date_header' %>
+
+  <% if @lesson.blank? %>
+    <table width="100%">
       <tr>
-        <td colspan="9"><h3 align="center"><%= @lesson.name %></h3></td>
+        <td colspan="2"><h3 align="center"><%= "No lesson for this day!" %></h3></td>
       </tr>
-      <tr>
-        <td colspan="5" rowspan="2">
-          <%= label_tag :must_be_practised %>
-          <%= text_area_tag :must_be_practised, @lesson.must_be_practised, size: "x12" %>
-        </td>
-        <td colspan="4">Comments box for student/parent</td>
-      </tr>
-      <tr>
-        <td colspan="4">Hours</td>
-      </tr>
-      <tr>
-        <td colspan="5">
-          <%= label_tag :how_to_practise %>
-          <%= text_area_tag :how_to_practise, @lesson.how_to_practise, size: "x12" %>
-        </td>
-        <td colspan="4">Comments box for Teacher</td>
-      </tr>
-      <tr>
-        <td colspan="5" rowspan="4">
-        Resource Area Links
-            <% @lesson.resources.each do |resource| %>
-              <table width="100%">
-                <tr>
-                  <td><%= resource.id %></td>
-                  <td>     
-                    <% if !resource.attachment.file.nil? %>
-                      <%= link_to resource.attachment.file.original_filename, resource.attachment.url %></td>
-                    <% end %>
-                    <% if !resource.link.nil? %>
-                      <%= link_to resource.link, resource.link %></td>
-                    <% end %>
-                  </td>
-                  <td>
-                    <% if resource.tag != 'other' %>
-                      <%= resource.tag %>
-                    <% elsif !resource.attachment.content_type.nil? %>
-                      <%= resource.attachment.content_type %>
-                    <% end %>
-                  </td>
-                  <td><%= check_box_tag "lesson[resource_ids][]", resource.id %></td>
-                </tr>
-              </table>
-            <% end %>
-        </td>
-        <td colspan="4">
-          <%= label_tag :raiting %>
-          <%= select_tag('raiting', options_for_select(['normal','high', 'low'], @lesson.raiting)) %>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="4">
-          <div class="input-daterange input-group" id="datepicker">
-          <div class="input-daterange" id="datepicker">
-            <%= label_tag :date_start %>
-            <%= text_field_tag :date_start, @lesson.date_start.strftime("%d/%m/%Y") %>
-            <%= label_tag :date_finish %>
-            <%= text_field_tag :date_finish, @lesson.date_finish.strftime("%d/%m/%Y") %>
-          </div>
-          <script type="text/javascript">
-            $('.input-daterange').datepicker({
-              format: "dd/mm/yyyy",
-              calendarWeeks: true,
-              autoclose: true,
-              todayHighlight: true
-            });
-            </script>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="4">
-          <%= label_tag :status %>
-          <%= select_tag('status', options_for_select(['new','in progress', 'completed'], @lesson.status)) %>
-        </td>
-      </tr>
-    <% else %>
-      <tr>
-        <td colspan="9"><h3 align="center"><%= "No lesson for this day!" %></h3></td>
-      </tr>
+    </table>
+  <% else %>
+    <%= form_for(@lesson) do |f| %>
+      <table width="100%">
+
+        <tr>
+          <td colspan="2"><h3 align="center"><%= f.object.name %></h3></td>
+        </tr>
+
+        <tr>
+          <td rowspan="2">
+            <%= f.label :must_be_practised %>
+            <%= f.text_area :must_be_practised, size: "x12" %>
+          </td>
+          <td>Comments box for student/parent</td>
+        </tr>
+        <tr>
+          <td>Hours</td>
+        </tr>
+
+        <tr>
+          <td>
+            <%= f.label :how_to_practise %>
+            <%= f.text_area :how_to_practise, size: "x12" %>
+          </td>
+          <td>Comments box for Teacher</td>
+        </tr>
+        
+        <tr>
+          <td rowspan="4">
+           
+            <div class="field-item">
+              <label>Resources:</label>
+              <% @resources_all = @resources %>
+              <% @resources = @lesson.resources %>
+              <%= render partial: 'resources/available_resources', locals:{ local_hash: {mode: "embedded", parent_model_name: "lesson", table_id: "embedded_resources", checked: true}} %>
+            </div>
+
+            <span class="success button small radius" onclick="$('#ResourcesModal').arcticmodal()">add yet resource</span>
+            <div style='display: none;'>
+              <div id="ResourcesModal" class="box-modal">
+                <div class="box-modal_close arcticmodal-close">close</div>
+                  <div id="resources_modal">
+                      <% @resources = @resources_all - @lesson.resources %>
+                      <%= render partial: 'resources/available_resources', locals:{local_hash: {mode: "embedded", parent_model_name: "lesson"}} %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <td>
+            <%= f.label :raiting %>
+            <%= select('lesson', 'raiting', options_for_select(['normal','high', 'low'],f.object.raiting)) %>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="input-daterange input-group" id="datepicker">
+            <div class="input-daterange" id="datepicker">
+              <%= f.label :date_start %>
+              <%= text_field_tag :lesson_date_start, @lesson.date_start.strftime("%d/%m/%Y"), name: "lesson[date_start]" %>
+              <%= f.label :date_finish %>
+              <%= text_field_tag :lesson_date_finish, @lesson.date_finish.strftime("%d/%m/%Y"), name: "lesson[date_finish]" %>
+            </div>
+            <script type="text/javascript">
+              $('.input-daterange').datepicker({
+                format: "dd/mm/yyyy",
+                calendarWeeks: true,
+                autoclose: true,
+                todayHighlight: true
+              });
+              </script>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :status %>
+            <%= select('lesson', 'status', options_for_select(['new','in progress', 'completed'], f.object.status)) %>
+          </td>
+        </tr>
+      </table>
+
+      <div class="field-item">
+        <%= f.submit "Submit Changes", :class => "success button radius" %>
+        <%= link_to "Cancel changes", lessons_path, :class => "cancel" %>
+      </div>
+
     <% end %>
-  </table>
+  <% end %>
 </div>

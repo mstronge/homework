@@ -1,14 +1,19 @@
   <tr id="resource_<%= resource.id %>">
     <td><%= resource.id %></td>
+    
     <td>
       <% if !resource.attachment.file.nil? %>
-          <%= link_to resource.attachment.file.original_filename, resource.attachment.url %>
+          <%= link_to resource.attachment.file.original_filename, resource.attachment.url, target: "_blank" %>
       <% end %>
       <% if !resource.link.nil? %>
-          <%= link_to resource.link, resource.link %>
+          <%= link_to resource.link, resource.link, target: "_blank" %>
       <% end %>
     </td>
-    <td><%= resource.created_at.strftime("%d %b %y, %H:%M") %></td>
+
+    <% if local_hash[:mode] == "paginate" %>
+      <td><%= resource.created_at.strftime("%d/%m/%Y") %></td>
+    <% end %>
+    
     <td>
       <% if resource.tag != 'other' %>
         <%= resource.tag %>
@@ -16,7 +21,16 @@
         <%= resource.attachment.content_type %>
       <% end %>
     </td>
-    <% if current_user.admin? %>
-      <td><%= link_to "Delete",  resource, method: :delete, remote: :true, data: { confirm: 'Are you sure?' } %></td>
+
+    <% if local_hash[:mode] == "embedded" %>
+      
+      <td>
+        <%= check_box_tag "#{local_hash[:parent_model_name]}[resource_ids][]", resource.id, local_hash[:checked], { onclick: "if ($('#resource_#{resource.id}').parent().parent().attr('id')!='embedded_resources') {$('#resource_#{resource.id}').appendTo($('#embedded_resources'))};" } %>
+      </td>
+
+    <% elsif current_user.admin? %>
+      
+      <td><%= link_to "Delete",  resource, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
     <% end %>
   </tr>

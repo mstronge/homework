@@ -1,0 +1,10 @@
+  <h3>New resource</h3>
+  <div class="panel">
+    <%= form_for Resource.new do |f| %>
+      <%= f.file_field :attachment %>
+      <%= f.hidden_field :attachment_cache %>
+      <%= label_tag(:remote_link, "Remote link") %>
+      <%= f.text_field :link %>
+      <%= f.submit 'Add new resource' %>
+    <% end %>
+  </div>

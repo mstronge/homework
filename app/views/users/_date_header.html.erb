@@ -1,0 +1,18 @@
+  <table width="100%">
+    <tr>
+      <% 9.times do |i| %>
+        <% if (@date-4+i).strftime("%d %b %Y") == DateTime.now.strftime("%d %b %Y") %>
+          <% date_text = "today" %>
+        <% else %>
+          <% date_text = (@date-4+i).strftime("%d %b") %>
+        <% end %>
+        <th>
+          <% if i ==4 %>
+            <h4><%= date_text %></h4>
+          <% else %>
+            <%= link_to  date_text, {:date => (@date-4+i).strftime("%d/%m/%Y") } %>
+          <% end %>
+        </th>
+      <% end %>
+    </tr>
+  </table>

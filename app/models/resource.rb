@@ -16,7 +16,6 @@ class Resource < ActiveRecord::Base
   protected
     
     def set_tag
-
       if !attachment.file.nil?
       
         if /(pdf)$/i =~ attachment.content_type
@@ -32,7 +31,6 @@ class Resource < ActiveRecord::Base
         end
       
         self.link = nil
- 
       end
       
       self.tag = 'link' if !link.blank?

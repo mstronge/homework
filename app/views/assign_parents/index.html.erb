@@ -1,35 +1,37 @@
 <% if current_user.admin? %>
   <div id="list-users" class="large-12 columns">
-    <h2>Administration</h2>
     
     <% if @students.size>0 %>
-      <h4>Students without parents</h4>
+      <h4>Students without parents:</h4>
       
       <table width="100%" class="users">
+        
         <tr>
           <th>Student</th>
           <th>Parent</th>
         </tr>
+
         <% @students.each do |student| %>
+          
           <tr <%= "id=row_student_#{student.id}" %> >
             <td><%= student.name %></td>
             <td>
+              
               <%= form_for(student, remote: true) do |f| %>
                   <div class="field-item">
-                    <%= collection_select(:user, :parent_id, @parents, :id, :name, { include_blank: true, selected: f.object.parent_id }) %>
+                    <%= collection_select(:user, :parent_id, @parents, :id, :name, { include_blank: true }) %>
                   </div>
                   <div class="field-item">
                     <%= f.submit "Assign" %>
                   </div>
               <% end %>
+
             </td>
           </tr>
+
         <% end %>
       </table>
       
-      <div class="apple_pagination">
-        <%= will_paginate %>
-      </div>
     <% else %>
       <h4>All students have parents</h4>
     <% end %>
