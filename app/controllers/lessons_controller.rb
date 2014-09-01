@@ -1,8 +1,8 @@
 class LessonsController < ApplicationController
   helper_method :sort_column, :sort_direction
 
-  before_filter :admin_user, :only => [ :index, :new, :create, :update, :destroy ]
-  #before_filter :correct_user_or_parent_or_admin, :only => [:show]
+  before_filter :admin_user, :only => [ :index, :new, :create, :destroy ]
+  before_filter :correct_user_or_parent_or_admin, :only => [:update, :show]
   
   def index
     @title = "All lessons"
@@ -34,18 +34,19 @@ class LessonsController < ApplicationController
   end
 
   def update
-    
     @lesson = Lesson.find(params[:id])
-    if @lesson.update_attributes(lesson_params)
+    @comment = @lesson.comments.create(comment_params) if comment_params
+    
+   if @lesson.update_attributes(lesson_params)
       flash[:success] = "Lesson with id=#{@lesson.id} was successfully updated."
-      redirect_to diary_user_path(@lesson.user_id, :date => @lesson.date_start)
     else
       errors_message = "Lesson wasn't updated! \n\n ERRORS: "
       @lesson.errors.messages.each { |k,v| errors_message += " #{k.to_s} #{v};" }
       flash[:alert] = errors_message
-      redirect_to diary_user_path(@lesson.user_id, :date => @lesson.date_start)
-    end
-    
+    end 
+
+    redirect_to :back
+
   end
 
   def destroy
@@ -67,7 +68,13 @@ class LessonsController < ApplicationController
     end
 
     def lesson_params
-      params.require(:lesson).permit(:name,:user_id,:date_start,:date_finish,:must_be_practised,:how_to_practise,:raiting,:status,resource_ids:[])
+      {"resource_ids" => []}
+      .merge(params.require(:lesson).permit(:name,:user_id,:date_start,:date_finish,:must_be_practised,:how_to_practise,:raiting,:status,resource_ids:[])
+      .merge(params[:lesson].reject{|k,v| v.blank? || k != "minutes_hash"}))
+    end
+
+    def comment_params
+      params[:comment][:body].present? ? params.require(:comment).permit(:body).merge({user_id: current_user.id}) : nil
     end
 
     def sort_column
@@ -78,13 +85,13 @@ class LessonsController < ApplicationController
       %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
     end
 
-    #def correct_user_or_parent_or_admin
-      #@user = Lesson.find(params[:id]).user
-      #@parent = @user.parent
-      #unless current_user?(@user) || current_user.admin? || current_user?(@parent)
-        #redirect_to(root_path)
-        #flash[:alert] = "You are not authorised to view this page."
-      #end
-    #end
+    def correct_user_or_parent_or_admin
+      @user = Lesson.find(params[:id]).user
+      @parent = @user.parent
+      unless current_user?(@user) || current_user.admin? || current_user?(@parent)
+        flash[:alert] = "You are not authorised to view this page."
+        redirect_to(root_path) 
+      end
+    end
 
 end

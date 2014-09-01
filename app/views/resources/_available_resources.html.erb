@@ -5,7 +5,7 @@
       <th>Id</td>
       <th>link</td>
       <th>tag</td>
-      <th>joined</th>
+      <% if local_hash[:change] != false %><th>joined</th><% end %>
 
     <% elsif local_hash[:mode] == "paginate" %>
 

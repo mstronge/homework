@@ -10,86 +10,116 @@
     </table>
   <% else %>
     <%= form_for(@lesson) do |f| %>
+
       <table width="100%">
 
         <tr>
-          <td colspan="2"><h3 align="center"><%= f.object.name %></h3></td>
+          <td colspan="2"><h1 align="center"><%= f.object.name %></h3></td>
         </tr>
 
         <tr>
-          <td rowspan="2">
-            <%= f.label :must_be_practised %>
-            <%= f.text_area :must_be_practised, size: "x12" %>
+          <td width="50%">
+            <h4 align="center">Must be practised:</h4>
+            <%= f.text_area :must_be_practised, size: "x12", disabled: (current_user.role != "teacher") %>
           </td>
-          <td>Comments box for student/parent</td>
-        </tr>
-        <tr>
-          <td>Hours</td>
+          <td width="50%">
+            <h4 align="center">How to practise:</h4>
+            <%= f.text_area :how_to_practise, size: "x12", disabled: (current_user.role != "teacher") %>
+          </td>
         </tr>
 
         <tr>
-          <td>
-            <%= f.label :how_to_practise %>
-            <%= f.text_area :how_to_practise, size: "x12" %>
-          </td>
-          <td>Comments box for Teacher</td>
-        </tr>
-        
-        <tr>
-          <td rowspan="4">
+          <td colspan="2" >
            
             <div class="field-item">
-              <label>Resources:</label>
+              <h4 align="center">Resources:</h4>
               <% @resources_all = @resources %>
               <% @resources = @lesson.resources %>
-              <%= render partial: 'resources/available_resources', locals:{ local_hash: {mode: "embedded", parent_model_name: "lesson", table_id: "embedded_resources", checked: true}} %>
+              <%= render partial: 'resources/available_resources', locals:{ local_hash: {mode: "embedded", parent_model_name: "lesson", table_id: "embedded_resources", checked: true, change: current_user.admin}} %>
             </div>
 
-            <span class="success button small radius" onclick="$('#ResourcesModal').arcticmodal()">add yet resource</span>
-            <div style='display: none;'>
-              <div id="ResourcesModal" class="box-modal">
-                <div class="box-modal_close arcticmodal-close">close</div>
-                  <div id="resources_modal">
-                      <% @resources = @resources_all - @lesson.resources %>
-                      <%= render partial: 'resources/available_resources', locals:{local_hash: {mode: "embedded", parent_model_name: "lesson"}} %>
+            <% if current_user.role == "teacher" %>
+              <span class="success button small radius" onclick="$('#ResourcesModal').arcticmodal()">add yet resource</span>
+              <div style='display: none;'>
+                <div id="ResourcesModal" class="box-modal">
+                  <div class="box-modal_close arcticmodal-close">close</div>
+                    <div id="resources_modal">
+                        <% @resources = @resources_all - @lesson.resources %>
+                        <%= render partial: 'resources/available_resources', locals:{local_hash: {mode: "embedded", parent_model_name: "lesson"}} %>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </td>
+            <% end %>
 
-          <td>
-            <%= f.label :raiting %>
-            <%= select('lesson', 'raiting', options_for_select(['normal','high', 'low'],f.object.raiting)) %>
           </td>
         </tr>
 
+        <% if current_user.role == 'teacher' %>
         <tr>
-          <td>
+          <td colspan="2">
             <div class="input-daterange input-group" id="datepicker">
             <div class="input-daterange" id="datepicker">
-              <%= f.label :date_start %>
-              <%= text_field_tag :lesson_date_start, @lesson.date_start.strftime("%d/%m/%Y"), name: "lesson[date_start]" %>
-              <%= f.label :date_finish %>
-              <%= text_field_tag :lesson_date_finish, @lesson.date_finish.strftime("%d/%m/%Y"), name: "lesson[date_finish]" %>
+              <h4 align="center">Date start:</h4>
+              <%= text_field_tag :lesson_date_start, @lesson.date_start.strftime("%d/%m/%Y"), name: "lesson[date_start]", disabled: (current_user.role != "teacher") %>
+              <h4 align="center">Date finish:</h4>
+              <%= text_field_tag :lesson_date_finish, @lesson.date_finish.strftime("%d/%m/%Y"), name: "lesson[date_finish]", disabled: (current_user.role != "teacher")%>
             </div>
-            <script type="text/javascript">
-              $('.input-daterange').datepicker({
-                format: "dd/mm/yyyy",
-                calendarWeeks: true,
-                autoclose: true,
-                todayHighlight: true
-              });
-              </script>
+            <% if current_user.role == "teacher" %>
+              <script type="text/javascript">
+                $('.input-daterange').datepicker({
+                  format: "dd/mm/yyyy",
+                  calendarWeeks: true,
+                  autoclose: true,
+                  todayHighlight: true
+                });
+                </script>
+              <% end %>
             </div>
           </td>
         </tr>
+        <% end %>
+
         <tr>
           <td>
-            <%= f.label :status %>
-            <%= select('lesson', 'status', options_for_select(['new','in progress', 'completed'], f.object.status)) %>
+            <h4 align="center">Status:</h4>
+            <%= select_tag('lesson[status]', options_for_select(['new','in progress', 'completed'], f.object.status)) %>
+          </td>
+          <td>
+            <h4 align="center">Raiting:</h4>
+            <%= select_tag('lesson[raiting]', options_for_select(['normal','high', 'low'],f.object.raiting), {disabled: (current_user.role != "teacher")}) %>
+          </td>    
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <h4 align="center">Minutes was practiced:</h4>
+            <%= render "minutes_was_practiced" %>
           </td>
         </tr>
+
+        <tr>
+          <td colspan="2"><h4 align="center">Last comments:</h4><td>
+        <tr>
+
+        <tr>
+          <td>
+            <ul id="teacher_comments" class="list-group">
+              <%= render @lesson.comments.where("type_owner = ?", "student").last(5) %>
+            </ul>
+          </td>
+           <td>
+                <ul id="teacher_comments" class="list-group">
+                  <%= render @lesson.comments.where("type_owner = ?", "teacher").last(5) %>
+                </ul>
+          </td>
+        </tr>
+
+        <tr>
+          <td><%= render "comments/form" %></td>
+          <td><%= link_to "all comments", lesson_comments_path(@lesson) %></td>
+        <tr>
+
       </table>
 
       <div class="field-item">

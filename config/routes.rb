@@ -1,11 +1,16 @@
 Rails.application.routes.draw do
 
 
-  resources :resources, :lessons
+  resources :resources
+
   resources :sessions, :only => [:new, :create, :destroy]
 
   resources :users do
     get 'diary', on: :member
+  end
+
+  resources :lessons do
+    resources :comments
   end
 
   root 'pages#home'

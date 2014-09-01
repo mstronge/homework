@@ -1,0 +1,32 @@
+            <table width="100%">
+              <tr>
+                <% minutes_hash = @lesson.minutes_hash.present? ? JSON.parse(@lesson.minutes_hash) : {} %>
+                <% (@lesson.date_start..@lesson.date_finish).each do |d| %>
+                  <th>
+                    <% if d.strftime("%d %b %Y") == DateTime.now.strftime("%d %b %Y") %>
+                      <% date_text = "today" %>
+                    <% else %>
+                      <% date_text = d.strftime("%d %b") %>
+                    <% end %>
+                    <% if d == @date %>
+                      <h4><%= date_text %></h4>
+                    <% else %>
+                      <%= date_text %>
+                    <% end %>
+                  <% end %>
+                </th>
+              </tr>
+
+              <tr>
+                <% (@lesson.date_start..@lesson.date_finish).each do |d| %>
+                <!-- && (@date).strftime("%d %b %Y") <= DateTime.now.strftime("%d %b %Y") -->
+                  <% if d == @date && current_user.role == 'student' %>
+                  <td>
+                    <%= select_tag("lesson[minutes_hash][#{d}]", options_for_select(['0','20','40', '60', '80', '100', '120'], selected: minutes_hash[d.to_s].present? ? minutes_hash[d.to_s] : '0')) %>
+                  </td>
+                  <% else %>
+                    <td><%= label_tag minutes_hash[d.to_s].present? ? minutes_hash[d.to_s] : '0' %></td>
+                  <% end %>
+                <% end %>
+              </tr>
+            </table>

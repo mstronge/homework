@@ -1,8 +1,9 @@
 class User < ActiveRecord::Base
 	
 	has_many :students, class_name: "User", foreign_key: "parent_id"
-	belongs_to :parent, class_name: "User"
 	has_many :lessons
+	has_many :comments
+	belongs_to :parent, class_name: "User"
 
 	attr_accessor :password
 

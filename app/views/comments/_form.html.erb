@@ -1,0 +1,4 @@
+<%= form_for([@lesson, @lesson.comments.build]) do |f| %>
+  <h4>New comment: </h4>
+  <%= f.text_area :body %>
+<% end %>

@@ -1,0 +1,7 @@
+<li class="list-group-item" max-width="100%">
+  <%= comment.body %>
+  <div class="right-align">
+    <%= "#{comment.user.name} (#{comment.created_at.strftime("%H:%M, %d %b %Y")})"%>
+  </div>
+  <br/>
+</li>

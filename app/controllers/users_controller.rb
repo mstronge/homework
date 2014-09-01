@@ -48,6 +48,7 @@ class UsersController < ApplicationController
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, :flash => { :success => "Account details have been changed." } }
         if @user.parent_id.present?
+          # response assign parents 
           format.js { render js: "$('#row_student_#{params[:id]}').remove()"  }
         end
       else
