@@ -33,7 +33,9 @@ private
 
   def minutes_hash_processing
     if minutes_hash.present? 
-      self.minutes_hash = self.minutes_hash_was.present? ? JSON.parse(self.minutes_hash_was).merge(minutes_hash).to_json : minutes_hash.to_json 
+      if minutes_hash != self.minutes_hash_was
+        self.minutes_hash = self.minutes_hash_was.present? ? JSON.parse(self.minutes_hash_was).merge(minutes_hash).to_json : minutes_hash.to_json 
+      end
     end
   end
 
