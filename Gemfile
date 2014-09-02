@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+#source 'https://rails-assets.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -25,6 +26,8 @@ end
 
 gem 'carrierwave', '0.10.0'
 gem 'bootstrap-datepicker-rails'
+#gem 'rails-assets-fullcalendar'
+
 #gem "date_validator", "0.7.0"
 
 #gem "rmagick", "2.13.3"

@@ -1,1 +1,23 @@
-calendar
+<table id="calendar" width="100%">
+  <%= render partial: "ymonth" %>
+  <%= render partial: "wday" %>
+  <% calendar(@date.month,@date.year).each do |w| %>
+    <tr height="100px">
+      <% w.each do |d| %>
+        <td style="vertical-align:top" width="14%">
+          <% if d.present? %>
+            <div align="left"><%= d %></div>
+            <% date = "#{d.to_s}/#{@date.month.to_s}/#{@date.year.to_s}".to_date %>
+            <% if @lessons.present? %>
+              <% lessons_arr = @lessons.where("date_start <= ? and date_finish >= ?", date, date) %>
+              <% if lessons_arr.size == 1 %>
+                <div align="center"><%= link_to lessons_arr.first.name, lesson_path(lessons_arr.first, { date: date }) %></div>
+              <% end %>
+            <% end %>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+

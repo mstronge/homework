@@ -1,0 +1,15 @@
+  <tr  height="50px">
+    <th colspan="2">
+      <div align="left">
+        <%=  link_to  "<<", { :date =>("1/#{@date.month.to_s}/#{@date.year.to_s}".to_date - 1), :anchor => "calendar" }  %>
+      </div>
+    </th>
+    <th colspan="3">
+      <div align="center"><%= @date.strftime("%B %Y") %></div>
+    </th>
+    <th colspan="2">
+      <div align="right">
+        <%=  link_to  ">>", { :date =>("#{month_days(@date.month,@date.year)}/#{@date.month.to_s}/#{@date.year.to_s}".to_date + 1), :anchor => "calendar" }  %>
+      </div>
+    </th>
+  </tr>

@@ -79,6 +79,7 @@ class UsersController < ApplicationController
   def calendar
     @title = "Calendar #{User.find(params[:id]).name}"
     @date = params[:date].present? ? params[:date].to_date : DateTime.now
+    @lessons = Lesson.equal_param(user_id: params[:id])
   end
 
   private
