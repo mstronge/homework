@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_filter :authenticate, :only => [:index]
   before_filter :correct_user_or_admin, :only => [:show, :edit, :update]
   before_filter :admin_user, :only => :destroy
+  before_filter :correct_user_or_parent_or_admin, :only => [:diary, :calendar]
 
   def index
     @users = User.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 10)
@@ -72,6 +73,12 @@ class UsersController < ApplicationController
     @date = params[:date].present? ? params[:date].to_date : DateTime.now
     @lesson = Lesson.equal_param(user_id: params[:id]).search_date_finish_not_less(@date).search_date_start_not_more(@date).first
     @resources = Resource.all
+    @title = "Diary #{User.find(params[:id]).name}"
+  end
+
+  def calendar
+    @title = "Calendar #{User.find(params[:id]).name}"
+    @date = params[:date].present? ? params[:date].to_date : DateTime.now
   end
 
   private
@@ -98,6 +105,15 @@ class UsersController < ApplicationController
   
     def sort_direction
       %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+    end
+
+    def correct_user_or_parent_or_admin
+      @user = User.find(params[:id])
+      @parent = @user.parent
+      unless current_user?(@user) || current_user.admin? || current_user?(@parent)
+        flash[:alert] = "You are not authorised to view this page."
+        redirect_to(root_path) 
+      end
     end
 
 end

@@ -11,7 +11,7 @@ class LessonsController < ApplicationController
   end
 
   def new
-    @title = "All lessons"
+    @title = "New lesson"
     @lesson = Lesson.new
     @students = User.only_students
     @resources = Resource.all
@@ -31,6 +31,16 @@ class LessonsController < ApplicationController
       @resources = Resource.order(updated_at: :desc)
       render "new"
     end
+  end
+
+  def show
+    @lesson = Lesson.find(params[:id])
+    @date = params[:date].present? ? params[:date].to_date : @lesson.date_start
+    @date = @lesson.date_finish if @date > @lesson.date_finish 
+    @date = @lesson.date_start if @date < @lesson.date_start
+    @resources = Resource.all
+    @title = "Lesson #{@lesson.name}"
+    render "users/diary"
   end
 
   def update
@@ -68,9 +78,13 @@ class LessonsController < ApplicationController
     end
 
     def lesson_params
-      {"resource_ids" => []}
-      .merge(params.require(:lesson).permit(:name,:user_id,:date_start,:date_finish,:must_be_practised,:how_to_practise,:raiting,:status,resource_ids:[])
-      .merge(params[:lesson].reject{|k,v| v.blank? || k != "minutes_hash"}))
+      if current_user.admin
+        {"resource_ids" => []}
+        .merge(params.require(:lesson).permit(:name,:user_id,:date_start,:date_finish,:must_be_practised,:how_to_practise,:raiting,:status,resource_ids:[]))
+      else
+        params.require(:lesson).permit(:status).merge(params[:lesson].reject{|k,v| v.blank? || k != "minutes_hash"})
+      end
+
     end
 
     def comment_params

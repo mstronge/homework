@@ -19,7 +19,6 @@
 
               <tr>
                 <% (@lesson.date_start..@lesson.date_finish).each do |d| %>
-                <!-- && (@date).strftime("%d %b %Y") <= DateTime.now.strftime("%d %b %Y") -->
                   <% if d == @date && current_user.role == 'student' %>
                   <td>
                     <%= select_tag("lesson[minutes_hash][#{d}]", options_for_select(['0','20','40', '60', '80', '100', '120'], selected: minutes_hash[d.to_s].present? ? minutes_hash[d.to_s] : '0')) %>

@@ -1,1 +1,9 @@
-index
+<div id="list-comments" class="large-12 columns" >
+  <h4 align="center"><%= "Comments for #{@lesson.name}" %></h4>
+  <%= link_to "Back to diary", diary_user_path(@lesson.user_id, :date => @lesson.date_start) %>
+  <br/><br/>
+  <%= render @lesson.comments, locals: {simple: false} %>
+  <%= link_to "Back to lesson", @lesson %>
+  <br/><br/>
+  <%= render "comments/form", locals: {simple: false} %>
+</div>

@@ -274,6 +274,10 @@ th .desc {
 	margin: 0;
 }
 
+#nav select {
+	width: auto;
+}
+
 .arcticmodal-container table {
 	background: none;
 	border: none;

@@ -1,6 +1,6 @@
 <div id="list-users" class="large-12 columns">
   
-  <%= render partial: 'date_header' %>
+  <%= render partial: 'users/date_header' %>
 
   <% if @lesson.blank? %>
     <table width="100%">
@@ -94,7 +94,7 @@
         <tr>
           <td colspan="2">
             <h4 align="center">Minutes was practiced:</h4>
-            <%= render "minutes_was_practiced" %>
+            <%= render "users/minutes_was_practiced" %>
           </td>
         </tr>
 
@@ -105,18 +105,18 @@
         <tr>
           <td>
             <ul id="teacher_comments" class="list-group">
-              <%= render @lesson.comments.where("type_owner = ?", "student").last(5) %>
+              <%= render @lesson.comments.where("type_owner = ?", "student").last(5), locals: {simple: true} %>
             </ul>
           </td>
            <td>
                 <ul id="teacher_comments" class="list-group">
-                  <%= render @lesson.comments.where("type_owner = ?", "teacher").last(5) %>
+                  <%= render @lesson.comments.where("type_owner = ?", "teacher").last(5), locals: {simple: true} %>
                 </ul>
           </td>
         </tr>
 
         <tr>
-          <td><%= render "comments/form" %></td>
+          <td><%= render "comments/form", locals: {simple: true} %></td>
           <td><%= link_to "all comments", lesson_comments_path(@lesson) %></td>
         <tr>
 
@@ -124,7 +124,7 @@
 
       <div class="field-item">
         <%= f.submit "Submit Changes", :class => "success button radius" %>
-        <%= link_to "Cancel changes", lessons_path, :class => "cancel" %>
+        <%= link_to "Cancel changes", ((current_user.role != "teacher") ? calendar_user_path(@lesson.user_id) : lessons_path), :class => "cancel" %>
       </div>
 
     <% end %>

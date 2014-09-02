@@ -18,10 +18,17 @@
       <nav>
         <div class="large-12 columns">
           <div id="nav">
-            <h5>Welcome <%= current_user.name %></h5>
+           <h5>Welcome <%= current_user.name %></h5>
             <% if !current_user.admin? %>
-              <%= link_to 'My Homework Diary', diary_user_path(current_user) %>
-              <a href="#">My Lesson Timetable</a>
+              <% if current_user.role == 'parent' %>
+                <% current_user.students.each do |student| %>
+                  <%= link_to "#{student.name} Homework Diary", diary_user_path(student) %>
+                  <%= link_to "#{student.name} Lesson Timetable", calendar_user_path(student) %>
+                <% end %>
+              <% else %>
+                <%= link_to 'My Homework Diary', diary_user_path(current_user) %>
+                <%= link_to 'My Lesson Timetable', calendar_user_path(current_user) %>             
+              <% end %>
               <%= link_to 'Resource Area', resources_path %>
               <%= link_to "Account Details", current_user %>
             <% end %>

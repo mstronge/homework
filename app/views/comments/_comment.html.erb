@@ -2,6 +2,9 @@
   <%= comment.body %>
   <div class="right-align">
     <%= "#{comment.user.name} (#{comment.created_at.strftime("%H:%M, %d %b %Y")})"%>
+    <% if !locals[:simple] && comment.user == current_user %> | 
+      <%= link_to "Delete",  [comment.lesson, comment], method: :delete, data: { confirm: 'Are you sure?' } %>
+    <% end %>
   </div>
   <br/>
 </li>

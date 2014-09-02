@@ -74,8 +74,8 @@
         <td><%= lesson.status %></td>
         <td><%= lesson.raiting %></td>
         <td>
-          <%= link_to "Show", diary_user_path(lesson.user_id, :date => lesson.date_start)
-          %> |
+          <!--%= link_to "Show", diary_user_path(lesson.user_id, :date => lesson.date_start) %-->
+          <%= link_to "Show", lesson %> |
           <%= link_to "Delete",  lesson, method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>

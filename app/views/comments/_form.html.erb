@@ -1,4 +1,8 @@
 <%= form_for([@lesson, @lesson.comments.build]) do |f| %>
-  <h4>New comment: </h4>
+  <h5>New comment:</h5>
   <%= f.text_area :body %>
+  <% if !locals[:simple] %>
+      <br/><br/>
+      <%= f.submit  "Add comment", :class => "success button" %>
+  <% end %>
 <% end %>
