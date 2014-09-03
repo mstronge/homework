@@ -1,31 +1,21 @@
+<% @resources_show = {} if !(defined? @resources_show); if @resources_show["resource_#{resource.id}"].nil? %>
+  <% @resources_show["resource_#{resource.id}"] = true %>
   <tr id="resource_<%= resource.id %>">
-    <td><%= resource.id %></td>
     
     <td>
       <% if !resource.attachment.file.nil? %>
-          <%= link_to resource.attachment.file.original_filename, resource.attachment.url, target: "_blank" %>
+        <%= link_to resource.attachment.file.original_filename, resource.attachment.url, target: "_blank" %>
       <% end %>
       <% if !resource.link.nil? %>
-          <%= link_to resource.link, resource.link, target: "_blank" %>
-      <% end %>
-    </td>
-
-    <% if local_hash[:mode] == "paginate" %>
-      <td><%= resource.created_at.strftime("%d/%m/%Y") %></td>
-    <% end %>
-    
-    <td>
-      <% if resource.tag != 'other' %>
-        <%= resource.tag %>
-      <% elsif !resource.attachment.content_type.nil? %>
-        <%= resource.attachment.content_type %>
+        <% name_link = resource.link.size < 50 ? resource.link : resource.link[0..50] + '...' %>
+        <%= link_to name_link, resource.link, target: "_blank" %>
       <% end %>
     </td>
 
     <% if local_hash[:mode] == "embedded" && local_hash[:change] != false %>
       
       <td>
-        <%= check_box_tag "#{local_hash[:parent_model_name]}[resource_ids][]", resource.id, local_hash[:checked], { onclick: "if ($('#resource_#{resource.id}').parent().parent().attr('id')!='embedded_resources') {$('#resource_#{resource.id}').appendTo($('#embedded_resources'))};" } %>
+        <%= check_box_tag "#{local_hash[:parent_model_name]}[resource_ids][]", resource.id, local_hash[:checked], { onclick: "if ($('#resource_#{resource.id}').parent().parent().attr('id').indexOf('embedded_') == -1) {$('#resource_#{resource.id}').appendTo($('#embedded_'+$('#resource_#{resource.id}').parent().parent().attr('id')))};" } %>
       </td>
 
     <% elsif current_user.admin? %>
@@ -34,3 +24,4 @@
 
     <% end %>
   </tr>
+<% end %>

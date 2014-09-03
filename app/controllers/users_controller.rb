@@ -72,7 +72,7 @@ class UsersController < ApplicationController
   def diary
     @date = params[:date].present? ? params[:date].to_date : DateTime.now
     @lesson = Lesson.equal_param(user_id: params[:id]).search_date_finish_not_less(@date).search_date_start_not_more(@date).first
-    @resources = Resource.all
+    @resources = Resource.all.order("id desc")
     @title = "Diary #{User.find(params[:id]).name}"
   end
 

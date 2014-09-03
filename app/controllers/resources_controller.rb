@@ -5,7 +5,7 @@ class ResourcesController < ApplicationController
   before_filter :admin_user,   :only => [:destroy, :create]
 
   def index
-    @resources = Resource.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 50)
+    @resources = Resource.order(sort_column + " " + sort_direction) #.paginate(:page => params[:page], :per_page => 50)
     @title = "Resource Area"
   end
 

@@ -20,7 +20,7 @@ class Lesson < ActiveRecord::Base
   scope :search_date_finish_not_less, ->(date){ where('"date_finish" >= ?', date.to_date) if date.present? }
   scope :search_date_start_not_more, ->(date){ where('"date_start" <= ?', date.to_date) if date.present? }
   scope :search, ->(params) {equal_param(params).search_date_finish_not_less(params[:date_start]).search_date_start_not_more(params[:date_finish]) }
-  
+
 private
 
   def validate_date

@@ -7,7 +7,7 @@ class LessonsController < ApplicationController
   def index
     @title = "All lessons"
     @students = User.only_students
-    @lessons = Lesson.search(search_params).eager_load(:user).order(sort_column + " " + sort_direction) .paginate(:page => params[:page], :per_page => 10)
+    @lessons = Lesson.search(search_params).eager_load(:user).order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 10)
   end
 
   def new
@@ -21,6 +21,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.new(lesson_params)
     if @lesson.save
       flash[:success] = "Lesson with id=#{@lesson.id} was successfully created."
+      LessonMailer.send_activity_by_lesson('create', @lesson)
       redirect_to lessons_path
     else
       errors_message = "Lesson wasn't created! \n\n ERRORS: "
@@ -38,7 +39,7 @@ class LessonsController < ApplicationController
     @date = params[:date].present? ? params[:date].to_date : @lesson.date_start
     @date = @lesson.date_finish if @date > @lesson.date_finish 
     @date = @lesson.date_start if @date < @lesson.date_start
-    @resources = Resource.all
+    @resources = Resource.all.order("id desc") 
     @title = "Lesson #{@lesson.name}"
     render "users/diary"
   end
@@ -49,6 +50,7 @@ class LessonsController < ApplicationController
     
    if @lesson.update_attributes(lesson_params)
       flash[:success] = "Lesson with id=#{@lesson.id} was successfully updated."
+      LessonMailer.send_activity_by_lesson('update', @lesson)
     else
       errors_message = "Lesson wasn't updated! \n\n ERRORS: "
       @lesson.errors.messages.each { |k,v| errors_message += " #{k.to_s} #{v};" }

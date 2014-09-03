@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    Lesson: 
+    <%= link_to @lesson.name, $host_to_links_in_mails[ENV['RAILS_ENV']] + lesson_path(@lesson) %>
+    <%= "was #{@activity}d." %>
+    </body>
+</html>

@@ -33,7 +33,7 @@ class Resource < ActiveRecord::Base
         self.link = nil
       end
       
-      self.tag = 'link' if !link.blank?
+      self.tag = 'linkk' if !link.blank?
     end
 
     def link_blank?

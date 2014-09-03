@@ -1,26 +1,83 @@
-<table width="100%" class="users" id="<%= local_hash[:table_id] %>">
-  <tr>
-    <% if local_hash[:mode] == "embedded" %>
-
-      <th>Id</td>
-      <th>link</td>
-      <th>tag</td>
-      <% if local_hash[:change] != false %><th>joined</th><% end %>
-
-    <% elsif local_hash[:mode] == "paginate" %>
-
-      <th><%= sortable "id", "Id", "resources" %></th>
-      <th>link</th>
-      <th><%= sortable "created_at", "added", "resources" %></th>
-      <th><%= sortable "tag", "tag", "resources" %></th>
-      <% if current_user.admin? %><th>actions</th><% end %>
-
-    <% end %>
+<table width="100%" class="users">
+  
+  <tr width="100%">
+    <th width="50%">
+      <div align="center">Pdf and Image Files</div>
+    </th>
+    <th width="50%" align="center">
+      <div align="center">Video Files</div>
+    </th>
   </tr>
 
-  <%= render partial: 'resources/resource', collection:@resources, locals:{local_hash: local_hash} %>
-</table>
+  <tr width="100%">
 
-<% if local_hash[:mode] == "paginate" %>
-  <div class="apple_pagination"><%= will_paginate %></div>
-<% end %>
+    <% if local_hash[:style] == "fixed" %>
+      <td width="50%" height="250px">
+    <% else %>
+      <td width="50%">
+    <% end %>
+
+      <div style='position:relative; left:0; top:0; width:100%; height:100%; overflow:auto'> 
+        <table class="users" width=100% id="<%= local_hash[:table_id_pre].to_s+'image_resources' %>">
+        <%= render partial: 'resources/resource', collection:@resources.where('tag = "pdf" or tag = "image"'), locals:{local_hash: local_hash} %>
+        </table>
+      </div>
+
+    </td>
+
+    <% if local_hash[:style] == "fixed" %>
+      <td width="50%" height="250px">
+    <% else %>
+      <td width="50%">
+    <% end %>
+
+      <div style='position:relative; left:0; top:0; width:100%; height:100%; overflow:auto'> 
+        <table class="users" width=100% id="<%= local_hash[:table_id_pre].to_s+'video_resources' %>">
+        <%= render partial: 'resources/resource', collection:@resources.where('tag = "video"'), locals:{local_hash: local_hash} %>
+        </table>
+      </div>
+
+    </td>
+  </tr>
+
+  <tr width="100%">
+    <th width="50%">
+      <div align="center">Audio Files</div>
+    </th>
+    <th width="50%" align="center">
+      <div align="center">Shop links to books (and other resources)</div>
+    </th>
+  </tr>
+
+   <tr width="100%">
+    
+    <% if local_hash[:style] == "fixed" %>
+      <td width="50%" height="250px">
+    <% else %>
+      <td width="50%">
+    <% end %>
+
+      <div style='position:relative; left:0; top:0; width:100%; height:100%; overflow:auto'> 
+        <table class="users" width=100% id="<%= local_hash[:table_id_pre].to_s+'audio_resources' %>">
+        <%= render partial: 'resources/resource', collection:@resources.where('tag = "audio"'), locals:{local_hash: local_hash} %>
+        </table>
+      </div>
+
+    </td>
+
+    <% if local_hash[:style] == "fixed" %>
+      <td width="50%" height="250px">
+    <% else %>
+      <td width="50%">
+    <% end %>
+
+      <div style='position:relative; left:0; top:0; width:100%; height:100%; overflow:auto'> 
+        <table class="users" width=100% id="<%= local_hash[:table_id_pre].to_s+'link_resources' %>">
+        <%= render partial: 'resources/resource', collection:@resources.where('tag = "linkk" or tag = "other"'), locals:{local_hash: local_hash} %>
+        </table>
+      </div>
+
+    </td>
+  </tr>
+
+</table>
