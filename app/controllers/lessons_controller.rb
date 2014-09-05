@@ -45,20 +45,24 @@ class LessonsController < ApplicationController
   end
 
   def update
+
     @lesson = Lesson.find(params[:id])
-    @comment = @lesson.comments.create(comment_params) if comment_params
     
-   if @lesson.update_attributes(lesson_params)
-      flash[:success] = "Lesson with id=#{@lesson.id} was successfully updated."
+    if @lesson.update_attributes(lesson_params)
+      
       LessonMailer.send_activity_by_lesson('update', @lesson)
+
+      respond_to do |format|
+        format.json { render json: {success: "Lesson with id=#{@lesson.id} was successfully updated."}}
+      end
     else
       errors_message = "Lesson wasn't updated! \n\n ERRORS: "
       @lesson.errors.messages.each { |k,v| errors_message += " #{k.to_s} #{v};" }
       flash[:alert] = errors_message
+      respond_to do |format|
+        format.json { render json: {errors_message: errors_message}}
+      end
     end 
-
-    redirect_to :back
-
   end
 
   def destroy
@@ -81,16 +85,11 @@ class LessonsController < ApplicationController
 
     def lesson_params
       if current_user.admin
-        {"resource_ids" => []}
-        .merge(params.require(:lesson).permit(:name,:user_id,:date_start,:date_finish,:must_be_practised,:how_to_practise,:raiting,:status,resource_ids:[]))
+          params.require(:lesson).permit(:name,:user_id,:date_start,:date_finish,:must_be_practised,:how_to_practise,:raiting,:status,resource_ids:[])
       else
         params.require(:lesson).permit(:status).merge(params[:lesson].reject{|k,v| v.blank? || k != "minutes_hash"})
       end
 
-    end
-
-    def comment_params
-      params[:comment][:body].present? ? params.require(:comment).permit(:body).merge({user_id: current_user.id}) : nil
     end
 
     def sort_column

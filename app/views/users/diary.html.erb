@@ -60,9 +60,9 @@
             <div class="input-daterange input-group" id="datepicker">
             <div class="input-daterange" id="datepicker">
               <h4 align="center">Date start:</h4>
-              <%= text_field_tag :lesson_date_start, @lesson.date_start.strftime("%d/%m/%Y"), name: "lesson[date_start]", disabled: (current_user.role != "teacher") %>
+              <%= text_field_tag :lesson_date_start, @lesson.date_start.strftime("%d/%m/%Y"), name: "lesson[date_start]", disabled: (current_user.role != "teacherALL") %>
               <h4 align="center">Date finish:</h4>
-              <%= text_field_tag :lesson_date_finish, @lesson.date_finish.strftime("%d/%m/%Y"), name: "lesson[date_finish]", disabled: (current_user.role != "teacher")%>
+              <%= text_field_tag :lesson_date_finish, @lesson.date_finish.strftime("%d/%m/%Y"), name: "lesson[date_finish]", disabled: (current_user.role != "teacherALL")%>
             </div>
             <% if current_user.role == "teacher" %>
               <script type="text/javascript">
@@ -115,17 +115,70 @@
         </tr>
 
         <tr>
-          <td><%= render "comments/form", locals: {simple: true} %></td>
-          <td><%= link_to "all comments", lesson_comments_path(@lesson) %></td>
+          <td colspan="2"><%= link_to "all comments", lesson_comments_path(@lesson) %></td>
         <tr>
 
       </table>
 
-      <div class="field-item">
-        <%= f.submit "Submit Changes", :class => "success button radius" %>
-        <%= link_to "Cancel changes", ((current_user.role != "teacher") ? calendar_user_path(@lesson.user_id) : lessons_path), :class => "cancel" %>
-      </div>
-
     <% end %>
   <% end %>
 </div>
+
+<% if @lesson.present? %>
+  <script>
+
+    $(document).ready(function(){
+      var mh = $('*[id^=lesson_minutes_hash_]');
+      mh.change(function(){return update_minutes_hash(mh);});
+      $("#lesson_status").change(function(){return update_attribute($("#lesson_status"));});
+      $("#lesson_raiting").change(function(){return update_attribute($("#lesson_raiting"));});
+      $("#lesson_must_be_practised").change(function(){return update_attribute($("#lesson_must_be_practised"));});
+      $("#lesson_how_to_practise").change(function(){return update_attribute($("#lesson_how_to_practise"));});
+      return false;
+    });
+
+    
+      var update_attribute = function(el) {
+        $.ajax({
+          type: "put",
+          url: "<%=lesson_path(@lesson) %>",
+          data: el.attr('name') +"="+ el.val(),
+          success: function(data){
+            if (data.errors_message!=undefined) {alert(data.errors_message)};
+          }
+        });
+      };
+
+      var update_minutes_hash = function(mh) {
+        var lesson = {};
+        lesson.minutes_hash ={};
+        lesson.minutes_hash[mh.attr("id").substring("lesson_minutes_hash_".length)]=mh.val();
+        $.ajax({
+          type: "put",
+          dataType: 'json',
+          contentType: 'application/json',
+          url: "<%=lesson_path(@lesson) %>",
+          data: JSON.stringify(lesson),
+          success: function(data){
+            if (data.errors_message!=undefined) {alert(data.errors_message)};
+          }
+        });
+      };
+
+      var update_resource_ids = function() {
+        var lesson = {};
+        lesson.resource_ids = $.map( $(":checkbox:checked"), function(el){ return $(el).val(); });
+        $.ajax({
+          type: "put",
+          dataType: 'json',
+          contentType: 'application/json',
+          url: "<%=lesson_path(@lesson) %>",
+          data: JSON.stringify(lesson),
+          success: function(data){
+            if (data.errors_message!=undefined) {alert(data.errors_message)};
+          }
+        });
+      };
+
+  </script>
+<% end %>

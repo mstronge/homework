@@ -15,7 +15,7 @@
     <% if local_hash[:mode] == "embedded" && local_hash[:change] != false %>
       
       <td>
-        <%= check_box_tag "#{local_hash[:parent_model_name]}[resource_ids][]", resource.id, local_hash[:checked], { onclick: "if ($('#resource_#{resource.id}').parent().parent().attr('id').indexOf('embedded_') == -1) {$('#resource_#{resource.id}').appendTo($('#embedded_'+$('#resource_#{resource.id}').parent().parent().attr('id')))};" } %>
+        <%= check_box_tag "#{local_hash[:parent_model_name]}[resource_ids][]", resource.id, local_hash[:checked], { onclick: "if ($('#resource_#{resource.id}').parent().parent().attr('id').indexOf('embedded_') == -1) {$('#resource_#{resource.id}').appendTo($('#embedded_'+$('#resource_#{resource.id}').parent().parent().attr('id')))}; update_resource_ids();" } %>
       </td>
 
     <% elsif current_user.admin? %>
