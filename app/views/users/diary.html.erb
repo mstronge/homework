@@ -38,15 +38,15 @@
             </div>
 
             <% if current_user.role == "teacher" %>
-              <span class="success button small radius" onclick="$('#ResourcesModal').arcticmodal()">add yet resource</span>
+              <span class="success button small radius" onclick="$('#ResourcesModal').arcticmodal()">add yet resources</span>
               <div style='display: none;'>
                 <div id="ResourcesModal" class="box-modal">
                   <div class="box-modal_close arcticmodal-close">close</div>
-                    <div id="resources_modal">
+                  <div id="resources_modal">
                         <% @resources = @resources_all %>
                         <%= render partial: 'resources/available_resources', locals:{local_hash: {mode: "embedded", parent_model_name: "lesson", style: "fixed"}} %>
-                    </div>
                   </div>
+                  <span class="success button small radius" onclick="merge_resources_to_lesson();">add resources</span>
                 </div>
               </div>
             <% end %>
@@ -60,9 +60,9 @@
             <div class="input-daterange input-group" id="datepicker">
             <div class="input-daterange" id="datepicker">
               <h4 align="center">Date start:</h4>
-              <%= text_field_tag :lesson_date_start, @lesson.date_start.strftime("%d/%m/%Y"), name: "lesson[date_start]", disabled: (current_user.role != "teacherALL") %>
+              <%= text_field_tag :lesson_date_start, @lesson.date_start.strftime("%d/%m/%Y"), name: "lesson[date_start]", disabled: (current_user.role != "teacher") %>
               <h4 align="center">Date finish:</h4>
-              <%= text_field_tag :lesson_date_finish, @lesson.date_finish.strftime("%d/%m/%Y"), name: "lesson[date_finish]", disabled: (current_user.role != "teacherALL")%>
+              <%= text_field_tag :lesson_date_finish, @lesson.date_finish.strftime("%d/%m/%Y"), name: "lesson[date_finish]", disabled: (current_user.role != "teacher")%>
             </div>
             <% if current_user.role == "teacher" %>
               <script type="text/javascript">
@@ -126,6 +126,7 @@
 
 <% if @lesson.present? %>
   <script>
+    var lesson_date_start_last, lesson_date_finish_last;
 
     $(document).ready(function(){
       var mh = $('*[id^=lesson_minutes_hash_]');
@@ -134,51 +135,80 @@
       $("#lesson_raiting").change(function(){return update_attribute($("#lesson_raiting"));});
       $("#lesson_must_be_practised").change(function(){return update_attribute($("#lesson_must_be_practised"));});
       $("#lesson_how_to_practise").change(function(){return update_attribute($("#lesson_how_to_practise"));});
+      $("#lesson_date_start").change(function(){return changeDate();});
+      $("#lesson_date_finish").change(function(){return changeDate();});
+      lesson_date_start_last = $("#lesson_date_start").val();
+      lesson_date_finish_last = $("#lesson_date_finish").val();
+
       return false;
     });
 
-    
-      var update_attribute = function(el) {
-        $.ajax({
-          type: "put",
-          url: "<%=lesson_path(@lesson) %>",
-          data: el.attr('name') +"="+ el.val(),
-          success: function(data){
-            if (data.errors_message!=undefined) {alert(data.errors_message)};
-          }
-        });
-      };
+      var changeDate = function() {
+        var change = false;
+        if ($("#lesson_date_start").val() != lesson_date_start_last) {
+          lesson_date_start_last = $("#lesson_date_start").val();
+          change = true;
+        }
+        if ($("#lesson_date_finish").val() != lesson_date_finish_last) {
+          lesson_date_finish_last = $("#lesson_date_finish").val();
+          change = true;
+        }
+        if (change && lesson_date_start_last != "" && lesson_date_finish_last != "") {
+          var lesson = {};
+          lesson.date_start = $("#lesson_date_start").val();
+          lesson.date_finish = $("#lesson_date_finish").val();
+          send_ajax(JSON.stringify(lesson),'application/json');
+        }
+      } // End changeDate
+
+      var update_attribute = function(el) { send_ajax(el.attr('name') +"="+ el.val()); }
 
       var update_minutes_hash = function(mh) {
         var lesson = {};
         lesson.minutes_hash ={};
         lesson.minutes_hash[mh.attr("id").substring("lesson_minutes_hash_".length)]=mh.val();
-        $.ajax({
-          type: "put",
-          dataType: 'json',
-          contentType: 'application/json',
-          url: "<%=lesson_path(@lesson) %>",
-          data: JSON.stringify(lesson),
-          success: function(data){
-            if (data.errors_message!=undefined) {alert(data.errors_message)};
-          }
-        });
-      };
+        send_ajax(JSON.stringify(lesson),'application/json');
+      } // End update_minutes_hash
 
       var update_resource_ids = function() {
         var lesson = {};
         lesson.resource_ids = $.map( $(":checkbox:checked"), function(el){ return $(el).val(); });
+        send_ajax(JSON.stringify(lesson),'application/json');
+      } // End update_resource_ids
+
+      var merge_resources_to_lesson = function() {
+        var resources = $('*[id^=lesson_resource_ids_]');
+        var r, pp;
+        if (resources.length > 0) {
+          for (var i=0; i<resources.length; i++) {
+            r = $('#resource_'+resources[i].value);
+            pp = r.parent().parent();
+            if ((resources[i].checked) && (pp.attr('id').indexOf('embedded_') == -1)) r.appendTo($('#embedded_'+pp.attr('id'))); 
+          }
+        }
+        $('#ResourcesModal').arcticmodal('close');
+      } // End merge_resources_to_lesson
+
+      var send_ajax = function  (data, contentType = 'application/x-www-form-urlencoded; charset=UTF-8') {
         $.ajax({
           type: "put",
           dataType: 'json',
-          contentType: 'application/json',
+          contentType: contentType,
           url: "<%=lesson_path(@lesson) %>",
-          data: JSON.stringify(lesson),
+          data: data,
           success: function(data){
-            if (data.errors_message!=undefined) {alert(data.errors_message)};
+            if (data.str_errors!=undefined){
+              if (data.errors_messages.date_finish!=undefined) {}
+              else if (data.errors_messages.student_or_date!=undefined) {
+                alert(data.str_errors);
+                $("#lesson_date_start").val("");
+                $("#lesson_date_finish").val("");
+              } else {
+                alert(data.str_errors);
+              }
+            }
           }
         });
-      };
-
+      } // End send_ajax
   </script>
 <% end %>

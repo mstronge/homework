@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140901151949) do
+ActiveRecord::Schema.define(version: 20140907123741) do
 
   create_table "comments", force: true do |t|
     t.string   "type_owner"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20140901151949) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "minutes_hash"
+    t.datetime "last_send_mail_datetime"
   end
 
   add_index "lessons", ["user_id"], name: "index_lessons_on_user_id"

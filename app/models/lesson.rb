@@ -4,7 +4,8 @@ class Lesson < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   belongs_to :user
   
-  attr_accessible :name, :user_id, :date_start, :date_finish, :must_be_practised, :how_to_practise, :status, :raiting, :minutes_hash, :resource_ids
+  attr_accessible :name, :user_id, :date_start, :date_finish, :must_be_practised, :how_to_practise, :status, :raiting,
+                         :last_send_mail_datetime, :minutes_hash, :resource_ids
 
   before_validation :new_record_status
 
@@ -25,10 +26,13 @@ private
 
   def validate_date
     if date_start.present? && date_finish.present?
-      errors.add(:date_finish," can't be less than date_start") if date_finish < date_start
-      check = Lesson.equal_param(user_id: self.user_id).search_date_finish_not_less(self.date_start).search_date_start_not_more(self.date_start).first
-      check_id = check.present? ? check.id : nil
-      errors.add(:student_or_date," the student has a lesson for this period") if  check_id != self.id
+      if date_finish < date_start
+        errors.add(:date_finish," can't be less than date_start")
+      else
+        check = Lesson.equal_param(user_id: self.user_id).search_date_finish_not_less(self.date_start).search_date_start_not_more(self.date_start).first
+        check_id = check.present? ? check.id : nil
+        errors.add(:student_or_date," the student has a lesson for this period") if check_id.present? && check_id != self.id
+      end
     end
   end
 

@@ -4,6 +4,8 @@ class LessonsController < ApplicationController
   before_filter :admin_user, :only => [ :index, :new, :create, :destroy ]
   before_filter :correct_user_or_parent_or_admin, :only => [:update, :show]
   
+  IntervalBetweenSending = 600
+
   def index
     @title = "All lessons"
     @students = User.only_students
@@ -22,6 +24,7 @@ class LessonsController < ApplicationController
     if @lesson.save
       flash[:success] = "Lesson with id=#{@lesson.id} was successfully created."
       LessonMailer.send_activity_by_lesson('create', @lesson)
+      @lesson.update_attributes(last_send_mail_datetime: Time.now)
       redirect_to lessons_path
     else
       errors_message = "Lesson wasn't created! \n\n ERRORS: "
@@ -50,7 +53,13 @@ class LessonsController < ApplicationController
     
     if @lesson.update_attributes(lesson_params)
       
-      LessonMailer.send_activity_by_lesson('update', @lesson)
+      if @lesson.user != current_user
+        last_send_mail_datetime = @lesson.last_send_mail_datetime
+        if last_send_mail_datetime.nil? || last_send_mail_datetime + IntervalBetweenSending < Time.now
+          LessonMailer.send_activity_by_lesson('update', @lesson)
+          @lesson.update_attributes(last_send_mail_datetime: Time.now)
+        end
+      end
 
       respond_to do |format|
         format.json { render json: {success: "Lesson with id=#{@lesson.id} was successfully updated."}}
@@ -58,9 +67,8 @@ class LessonsController < ApplicationController
     else
       errors_message = "Lesson wasn't updated! \n\n ERRORS: "
       @lesson.errors.messages.each { |k,v| errors_message += " #{k.to_s} #{v};" }
-      flash[:alert] = errors_message
       respond_to do |format|
-        format.json { render json: {errors_message: errors_message}}
+        format.json { render json: {str_errors: errors_message, errors_messages: @lesson.errors.messages}}
       end
     end 
   end
