@@ -135,42 +135,9 @@
 
 <% if @lesson.present? %>
   
-  <% if current_user.role == 'teacher' %>
-    <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-    
-    <script>
-     var lesson_date_start_last, lesson_date_finish_last;
-     var hashResources = {};
-     
-     $(function() {
-        var availableResources = [];
-        <% (@resources_all - @lesson.resources).each do |r| %>
-          availableResources.push("<%= r.name %>");
-          hashResources["<%= r.name %>"] = "<%= r.id %>";
-        <% end %>
-        $( "#resources_search" ).autocomplete({ source: availableResources });
-      });
-
-      var resources_search_change = function(p) {
-        if (hashResources[$("#resources_search").val()] != undefined) {
-          var id = hashResources[$("#resources_search").val()];
-          r = $("#resource_" + id);
-          if (r.attr('id') == ("resource_" + id)) {
-            pp = r.parent().parent();
-            r.appendTo($('#embedded_'+pp.attr('id')));
-            $('*[value=' +id + ']')[0].click();
-            $("#resources_search").val("");
-          }
-        }
-        else if (p) {
-          alert('No resource with name: "' + $("#resources_search").val() + '"');
-        }
-      }
-
-    </script>
-  <% end %>
-
   <script>
+    var lesson_date_start_last, lesson_date_finish_last;
+    var hashResources = {};
 
     $(document).ready(function(){
       var mh = $('*[id^=lesson_minutes_hash_]');
@@ -186,8 +153,33 @@
       lesson_date_start_last = $("#lesson_date_start").val();
       lesson_date_finish_last = $("#lesson_date_finish").val();
 
+      <% if current_user.role == 'teacher' %>
+        var availableResources = [];
+        <% (@resources_all - @lesson.resources).each do |r| %>
+          availableResources.push("<%= r.name %>");
+          hashResources["<%= r.name %>"] = "<%= r.id %>";
+        <% end %>
+        $( "#resources_search" ).autocomplete({ source: availableResources });
+      <% end %>
+      
       return false;
     });
+
+      var resources_search_change = function(p) {
+        if (hashResources[$("#resources_search").val()] != undefined) {
+          var id = hashResources[$("#resources_search").val()];
+          r = $("#resource_" + id);
+          if (r.attr('id') == ("resource_" + id)) {
+            pp = r.parent().parent();
+            r.appendTo($('#embedded_'+pp.attr('id')));
+            $('*[value=' +id + ']')[0].click();
+            $("#resources_search").val("");
+          }
+        }
+        else if (p) {
+          alert('No resource with name: "' + $("#resources_search").val() + '"');
+        }
+      } // End resources_search_change
 
       var changeDate = function() {
         var change = false;
