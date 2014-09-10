@@ -161,9 +161,9 @@
         <% end %>
         $( "#resources_search" ).autocomplete({ source: availableResources });
       <% end %>
-      
+
       return false;
-    });
+    }); // End document ready function
 
       var resources_search_change = function(p) {
         if (hashResources[$("#resources_search").val()] != undefined) {

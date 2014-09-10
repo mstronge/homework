@@ -46,6 +46,17 @@
 
       <div class="field-item">
         <label>Resources:</label>
+        <div class="ui-widget">
+          <table>
+            <tr>
+              <td><label for="resources_search">Enter name of resource:</label>
+              <td><input id="resources_search" onkeydown="resources_search_change(false);"></td>
+              <td><a onclick="resources_search_change(true);">add resource</a></td>
+            </tr>
+          </table>
+          <table id="current_resource">
+          </table>
+        </div>
         <%= render partial: 'resources/available_resources', locals:{ local_hash: {mode: "embedded", parent_model_name: "lesson", style: "fixed"}} %>
       </div>
 
@@ -60,3 +71,37 @@
     <% end %>
   </div>
 </div>
+
+  <script>
+    var lesson_date_start_last, lesson_date_finish_last;
+    var hashResources = {};
+
+    $(document).ready(function(){
+
+        var availableResources = [];
+        <% (@resources).each do |r| %>
+          availableResources.push("<%= r.name %>");
+          hashResources["<%= r.name %>"] = "<%= r.id %>";
+        <% end %>
+        $( "#resources_search" ).autocomplete({ source: availableResources });
+
+
+      return false;
+    }); // End document ready function
+
+      var resources_search_change = function(p) {
+        if (hashResources[$("#resources_search").val()] != undefined) {
+          var id = hashResources[$("#resources_search").val()];
+          r = $("#resource_" + id);
+          if (r.attr('id') == ("resource_" + id)) {
+            pp = r.parent().parent();
+            r.appendTo($("#current_resource"));
+            $('*[value=' +id + ']')[0].click();
+            $("#resources_search").val("");
+          }
+        }
+        else if (p) {
+          alert('No resource with name: "' + $("#resources_search").val() + '"');
+        }
+      } // End resources_search_change
+  </script>
