@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140907123741) do
+ActiveRecord::Schema.define(version: 20140909171251) do
 
   create_table "comments", force: true do |t|
     t.string   "type_owner"
@@ -56,7 +56,10 @@ ActiveRecord::Schema.define(version: 20140907123741) do
     t.string   "attachment"
     t.string   "tag"
     t.string   "link"
+    t.string   "name"
   end
+
+  add_index "resources", ["name"], name: "index_resources_on_name", unique: true
 
   create_table "users", force: true do |t|
     t.string   "name"

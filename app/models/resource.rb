@@ -7,17 +7,22 @@ class Resource < ActiveRecord::Base
   attr_accessible :attachment, :attachment_cache, :tag, :link
   mount_uploader :attachment, ResourceUploader
 
-  before_validation :set_tag
+  before_validation :set_tag_and_valid_name
  
   validates :link, format: { with: VALID_HTTP_REGEX }, allow_blank: true
   validates :attachment, presence: true, if: :link_blank?
   validates :tag, presence: true
+  validates :name, presence: true, :uniqueness  => { :case_sensitive => false }
+
+  scope :equal_param, ->(hash){ where(hash.reject{|k,v| v.blank? || k =~ /^(date)/ }) }
 
   protected
     
-    def set_tag
+    def set_tag_and_valid_name
       if !attachment.file.nil?
-      
+        
+        self.name = attachment.file.original_filename if self.name.blank?
+
         if /(pdf)$/i =~ attachment.content_type
           self.tag = 'pdf' 
         elsif /(jpg|jpeg|gif|png)$/i =~ attachment.content_type 
@@ -33,7 +38,15 @@ class Resource < ActiveRecord::Base
         self.link = nil
       end
       
-      self.tag = 'linkk' if !link.blank?
+      if !link.blank?
+        self.tag = 'linkk' 
+        self.name = link if self.name.blank?
+      end
+
+      check = Resource.equal_param(name: self.name).first
+      check_id = check.present? ? check.id : nil
+      errors.add(:name," the name resources not unique") if check_id.present? && check_id != self.id
+
     end
 
     def link_blank?

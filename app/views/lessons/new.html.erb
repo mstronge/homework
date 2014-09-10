@@ -51,7 +51,7 @@
 
       <div class="field-item">
         <%= f.label :raiting %>
-        <%= select('lesson', 'raiting', options_for_select(['normal','high', 'low'],f.object.status)) %>
+        <%= select('lesson', 'raiting', options_for_select(["Bronze","Silver","Gold","Platinum"],f.object.status)) %>
       </div>
 
       <div class="field-item">

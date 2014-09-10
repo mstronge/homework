@@ -4,7 +4,8 @@
     
     <td>
       <% if !resource.attachment.file.nil? %>
-        <%= link_to resource.attachment.file.original_filename, resource.attachment.url, target: "_blank" %>
+        <%#= link_to resource.attachment.file.original_filename, resource.attachment.url, target: "_blank" %>
+        <%= link_to resource.name, resource.attachment.url, target: "_blank" %>
       <% end %>
       <% if !resource.link.nil? %>
         <% name_link = resource.link.size < 50 ? resource.link : resource.link[0..50] + '...' %>

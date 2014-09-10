@@ -5,9 +5,17 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-10.times do |i|
-  User.create(name: "student_#{i}", email: "student_#{i}@gmail.com", password: "12345678", confirm_password: "12345678", role: "student")
-end
-5.times do |i|
-  User.create(name: "parent_#{i}", email: "parent_#{i}@gmail.com", password: "12345678", confirm_password: "12345678", role: "parent")
+Resource.all.each do |r|
+  if r.name.blank?
+     if !r.attachment.file.nil?
+      r.name = r.attachment.file.original_filename
+    else
+      r.name = r.link
+    end
+    check = Resource.equal_param(name: r.name)
+    check_id = check.first.present? ? check.first.id : nil
+    r.name = "#{r.name}_#{r.id}" if check_id.present? && check_id != r.id
+    r.save
+  end
+  puts r.name
 end

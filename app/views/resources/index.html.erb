@@ -3,7 +3,47 @@
   <% if current_user.admin? %>
     <%= render partial: 'new' %>
   <% end %>
+  <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+   <script>
+   var hashResources = {};
+   var current_resource_id = "";
+   $(function() {
+      var availableResources = [];
+      <% @resources.each do |r| %>
+        availableResources.push("<%= r.name %>");
+        hashResources["<%= r.name %>"] = "<%= r.id %>";
+      <% end %>
+      $( "#resources_search" ).autocomplete({ source: availableResources });
+    });
+
+    var resources_search_change = function(p) {
+      if (hashResources[$("#resources_search").val()] != undefined) {
+        var id = hashResources[$("#resources_search").val()];
+        r = $("#resource_" + id);
+        if (r.attr('id') == ("resource_" + id)) {
+          if (current_resource_id != "") $("#" + current_resource_id).remove();
+          r.clone().prop('id',"current_resource_" + id).appendTo($("#current_resource"))
+          current_resource_id = "current_resource_" + id;
+        }
+      }
+      else if (p) {
+        alert('no resource with name: "' + $("#resources_search").val() + '"');
+      }
+    }
+  </script>
+
   <h3 id="resources">Available resources</h3>
+  <div class="ui-widget">
+    <table>
+      <tr>
+        <td><label for="resources_search">Enter name of resource:</label>
+        <td><input id="resources_search" onkeydown="resources_search_change(false);"></td>
+        <td><a onclick="resources_search_change(true);">show resource</a></td>
+      </tr>
+    </table>
+    <table id="current_resource">
+    </table>
+  </div>
   <%= render partial: 'available_resources', locals:{local_hash: {mode: mode, style: "fixed"}} %>
 </div>
 

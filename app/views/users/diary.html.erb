@@ -38,7 +38,16 @@
             </div>
 
             <% if current_user.role == "teacher" %>
-              <span class="success button small radius" onclick="$('#ResourcesModal').arcticmodal()">add yet resources</span>
+              <div class="ui-widget">
+                <table>
+                  <tr>
+                    <td><label for="resources_search">Enter name of resource:</label>
+                    <td><input id="resources_search" onkeydown="resources_search_change(false);"></td>
+                    <td><a onclick="resources_search_change(true);">add resource</a></td>
+                    <!--td><span class="success button small radius" onclick="$('#ResourcesModal').arcticmodal()">add yet resources</span></td-->
+                  </tr>
+                </table>
+              </div>
               <div style='display: none;'>
                 <div id="ResourcesModal" class="box-modal">
                   <div class="box-modal_close arcticmodal-close">close</div>
@@ -86,7 +95,7 @@
           </td>
           <td>
             <h4 align="center">Raiting:</h4>
-            <%= select_tag('lesson[raiting]', options_for_select(['normal','high', 'low'],f.object.raiting), {disabled: (current_user.role != "teacher")}) %>
+            <%= select_tag('lesson[raiting]', options_for_select(["Bronze","Silver","Gold","Platinum"],f.object.raiting), {disabled: (current_user.role != "teacher")}) %>
           </td>    
         </tr>
 
@@ -125,8 +134,43 @@
 </div>
 
 <% if @lesson.present? %>
+  
+  <% if current_user.role == 'teacher' %>
+    <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    
+    <script>
+     var lesson_date_start_last, lesson_date_finish_last;
+     var hashResources = {};
+     
+     $(function() {
+        var availableResources = [];
+        <% (@resources_all - @lesson.resources).each do |r| %>
+          availableResources.push("<%= r.name %>");
+          hashResources["<%= r.name %>"] = "<%= r.id %>";
+        <% end %>
+        $( "#resources_search" ).autocomplete({ source: availableResources });
+      });
+
+      var resources_search_change = function(p) {
+        if (hashResources[$("#resources_search").val()] != undefined) {
+          var id = hashResources[$("#resources_search").val()];
+          r = $("#resource_" + id);
+          if (r.attr('id') == ("resource_" + id)) {
+            pp = r.parent().parent();
+            r.appendTo($('#embedded_'+pp.attr('id')));
+            $('*[value=' +id + ']')[0].click();
+            $("#resources_search").val("");
+          }
+        }
+        else if (p) {
+          alert('No resource with name: "' + $("#resources_search").val() + '"');
+        }
+      }
+
+    </script>
+  <% end %>
+
   <script>
-    var lesson_date_start_last, lesson_date_finish_last;
 
     $(document).ready(function(){
       var mh = $('*[id^=lesson_minutes_hash_]');
@@ -135,7 +179,9 @@
       $("#lesson_raiting").change(function(){return update_attribute($("#lesson_raiting"));});
       $("#lesson_must_be_practised").change(function(){return update_attribute($("#lesson_must_be_practised"));});
       $("#lesson_how_to_practise").change(function(){return update_attribute($("#lesson_how_to_practise"));});
+      
       $("#lesson_date_start").change(function(){return changeDate();});
+      
       $("#lesson_date_finish").change(function(){return changeDate();});
       lesson_date_start_last = $("#lesson_date_start").val();
       lesson_date_finish_last = $("#lesson_date_finish").val();
@@ -189,7 +235,10 @@
         $('#ResourcesModal').arcticmodal('close');
       } // End merge_resources_to_lesson
 
-      var send_ajax = function  (data, contentType = 'application/x-www-form-urlencoded; charset=UTF-8') {
+      var send_ajax = function  (data, contentType) {
+        
+        if (contentType === undefined) contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+        
         $.ajax({
           type: "put",
           dataType: 'json',
