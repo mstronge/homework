@@ -26,7 +26,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-    @user.admin = false
+    @user.admin = true
     if @user.save
       flash[:success] = "Thank you, #{@user.name}, for signing up, your teacher will be in touch."
       redirect_to root_path

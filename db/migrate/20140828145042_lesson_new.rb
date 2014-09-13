@@ -2,7 +2,7 @@ class LessonNew < ActiveRecord::Migration
   
   def change
    
-    drop_table :lessons
+    #drop_table :lessons
 
     create_table :lessons do |t|
       t.string :name
