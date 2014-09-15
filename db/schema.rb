@@ -69,7 +69,11 @@ ActiveRecord::Schema.define(version: 20140909171251) do
     t.string   "encrypted_password"
     t.string   "salt"
     t.boolean  "admin",              default: false
+    t.boolean  "teacher"
+    t.boolean  "parent"
+    t.integer  "parent_user_id"
     t.string   "role"
+    t.integer  "user_id"
     t.integer  "parent_id"
   end
 
