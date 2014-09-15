@@ -13,6 +13,7 @@ gem 'turbolinks'
 gem 'foundation-rails'
 gem 'protected_attributes'
 gem 'will_paginate'
+gem 'uglifier'
 
 group :development do
   gem 'annotate'
