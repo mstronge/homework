@@ -1,8 +1,65 @@
-<div id="signup-panel" class="large-8 columns large-centered text-center">
+
+<div class="large-12 columns">
+
+<div id="homesplash">
+
+<div class="row">
+
+<div class="large-8 columns text-center">
+
+<h2>Welcome to MyMusicDiary.co.uk</h2>
+<p>Signup today to manage your music homework, lessons and more</p>
+
+<%= image_tag "logoicon.png" %>
+
+
+
+</ul>
+
+</div>
+
+<div id="signup-panel" class="large-4 columns text-center">
   <div class="panel radius">
     <% if !signed_in? %>
       <h1>Register to access your control panel</h1>
       <%= link_to "Signup", signup_path, :class => "success button radius" %>
+    <% else %>
+
+    <h1>You are already logged in.</h1>
+
     <% end %>
   </div>
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="home-features" class="row">
+
+<div class="large-4 columns text-center">
+<i class="fi-page"></i>
+<h3>Lesson Diary</h3>
+<p>View a timetable and diary of all your assigned lessons, making it easy to keep track of your work!</p>
+
+</div>
+
+
+<div class="large-4 columns text-center">
+<i class="fi-torso"></i>
+<h3>Parental support</h3>
+<p>Signup as a parent to keep track of your childs timetable and homework and view the progress and feedback from your childs teacher.</p>
+
+</div>
+
+<div class="large-4 columns text-center">
+<i class="fi-comments"></i>
+<h3>Discussion</h3>
+<p>Discuss each individual lesson as a parent, teacher or student, allowing you to ask questions about specific lessons or homework</p>
+
+</div>
+
+
 </div>
