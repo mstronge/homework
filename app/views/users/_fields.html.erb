@@ -27,6 +27,10 @@
   </div>
 <% end %>
 
+<div class="field-item">
+<%= f.text_field :admin %>
+</div>
+
 <% if signed_in? && current_user.admin? && !f.object.admin? %>
   <div class="field-item">
     <%= f.label :parent %>

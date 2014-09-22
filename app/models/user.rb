@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
 	attr_accessor :password
 
-	attr_accessible :name, :email, :password, :password_confirmation, :role, :parent_id
+	attr_accessible :name, :email, :password, :password_confirmation, :role, :parent_id, :admin
 
 	email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 

@@ -1,7 +1,7 @@
 module ApplicationHelper
 
 	def title
-		base_title = "Homework Application"
+		base_title = "MyMusicDiary.co.uk"
 		if @title.nil?
 			base_title
 		else
@@ -10,7 +10,7 @@ module ApplicationHelper
 	end
 
 	def logo
-		image_tag("logo.png", :alt => "Homework Helper")
+		image_tag("logo.png", :alt => "My Music Diary")
 	end
 
 	def sortable(column, title = nil, anchor = nil)
