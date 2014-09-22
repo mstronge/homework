@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20140909171251) do
     t.datetime "updated_at"
     t.string   "encrypted_password"
     t.string   "salt"
-    t.boolean  "admin",              default: false
+    t.boolean  "admin",              default: true
     t.boolean  "teacher"
     t.boolean  "parent"
     t.integer  "parent_user_id"

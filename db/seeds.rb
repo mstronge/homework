@@ -5,6 +5,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+  User.create!(name: "Matt Stronge", email: "matthew.stronge@gmail.com", password: "admin123", confirm_password: "admin123", role: "parent")
+
 Resource.all.each do |r|
   if r.name.blank?
      if !r.attachment.file.nil?
