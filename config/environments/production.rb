@@ -1,7 +1,7 @@
 Rails.application.configure do
 
   $host_to_links_in_mails = {} if (defined? $host_to_links_in_mails).nil?
-  $host_to_links_in_mails["production"]  = "http://homework.domain.name"
+  $host_to_links_in_mails["production"]  = "http://www.mymusicdiary.co.uk"
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -24,14 +24,14 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  config.serve_static_assets = true
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
 
   # Generate digests for assets URLs.
   config.assets.digest = true
@@ -92,5 +92,6 @@ Rails.application.configure do
 
   config.assets.precompile += %w( vendor/modernizr.js )
   config.assets.precompile += %w( foundation-icons/foundation-icons.css )
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   
 end
