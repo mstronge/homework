@@ -20,7 +20,11 @@
 
 body {
 	font-family: 'Noto Sans', sans-serif;
-	background-color: #fbfbfb;
+	background-color: #fbfbfb !important;
+}
+
+a:hover {
+	background-color: transparent;
 }
 
 header {

@@ -1,6 +1,6 @@
 class LessonMailer < ActionMailer::Base
   
-  default from: 'homework@noreplay.com'
+  default from: 'info@mymusicdiary.co.uk'
 
   def send_activity_by_lesson(activity, lesson)
       @lesson = lesson
