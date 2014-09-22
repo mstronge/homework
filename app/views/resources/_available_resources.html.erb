@@ -19,7 +19,7 @@
 
       <div style='position:relative; left:0; top:0; width:100%; height:100%; overflow:auto'> 
         <table class="users" width=100% id="<%= local_hash[:table_id_pre].to_s+'image_resources' %>">
-        <%= render partial: 'resources/resource', collection:@resources.where('tag = "pdf" or tag = "image"'), locals:{local_hash: local_hash} %>
+        <%= render partial: 'resources/resource', collection:@resources.where("tag = 'pdf' or tag = 'image'"), locals:{local_hash: local_hash} %>
         </table>
       </div>
 
@@ -33,7 +33,7 @@
 
       <div style='position:relative; left:0; top:0; width:100%; height:100%; overflow:auto'> 
         <table class="users" width=100% id="<%= local_hash[:table_id_pre].to_s+'video_resources' %>">
-        <%= render partial: 'resources/resource', collection:@resources.where('tag = "video"'), locals:{local_hash: local_hash} %>
+        <%= render partial: 'resources/resource', collection:@resources.where("tag = 'video'"), locals:{local_hash: local_hash} %>
         </table>
       </div>
 
@@ -59,7 +59,7 @@
 
       <div style='position:relative; left:0; top:0; width:100%; height:100%; overflow:auto'> 
         <table class="users" width=100% id="<%= local_hash[:table_id_pre].to_s+'audio_resources' %>">
-        <%= render partial: 'resources/resource', collection:@resources.where('tag = "audio"'), locals:{local_hash: local_hash} %>
+        <%= render partial: 'resources/resource', collection:@resources.where("tag = 'audio'"), locals:{local_hash: local_hash} %>
         </table>
       </div>
 
@@ -73,7 +73,7 @@
 
       <div style='position:relative; left:0; top:0; width:100%; height:100%; overflow:auto'> 
         <table class="users" width=100% id="<%= local_hash[:table_id_pre].to_s+'link_resources' %>">
-        <%= render partial: 'resources/resource', collection:@resources.where('tag = "linkk" or tag = "other"'), locals:{local_hash: local_hash} %>
+        <%= render partial: 'resources/resource', collection:@resources.where("tag = 'linkk' or tag = 'other'"), locals:{local_hash: local_hash} %>
         </table>
       </div>
 

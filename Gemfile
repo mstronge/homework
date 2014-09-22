@@ -30,7 +30,6 @@ group :production do
   gem 'rails_serve_static_assets'
   gem 'rails_12factor'
   gem 'postmark-rails'
-  gem 'better_errors'
 end
 
 gem 'carrierwave', '0.10.0'
