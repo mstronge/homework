@@ -365,3 +365,154 @@ th .desc {
 	padding-top: 20px;
 
 }
+
+#page .panel {
+	background-color: #FFF;
+	border:none;
+	box-shadow: 1px 1px 2px #ebebeb;
+	padding-top: 40px;
+	padding-bottom: 40px;
+	padding: 40px;
+}
+
+#page h1 {
+		font-family: 'Noto Sans', sans-serif;
+		color: #575757;
+		margin-bottom: 40px;
+		font-size: 20pt;
+		font-weight: 900;
+}
+
+#page p {
+		font-family: 'Noto Sans', sans-serif;
+		color: #b5b5b5;
+
+}
+
+#calendar {
+	background-color: #FFF;
+	border:none;
+	box-shadow: 1px 1px 2px #ebebeb;
+}
+
+#calendar td:hover {
+	-webkit-box-shadow: inset 0px 0px 7px 7px rgba(235,235,235,1);
+-moz-box-shadow: inset 0px 0px 7px 7px rgba(235,235,235,1);
+box-shadow: inset 0px 0px 7px 7px rgba(235,235,235,1);
+	}
+
+#diary-tabs {
+	padding:40px;
+	margin-top: 20px;
+	background-color: #FFF;
+	border:none;
+	box-shadow: 1px 1px 2px #ebebeb;
+}
+
+.teacher-comments {
+	height:152px;
+	overflow-y: scroll;
+}
+
+.teacher-comments li {
+	list-style: none;
+	display: block;
+	padding:20px;
+	border-bottom:1px solid #ebebeb;
+	font-family: 'Noto Sans', sans-serif;
+	color: #575757;
+	font-size:9pt;
+	font-weight: 900;
+	padding-bottom: 0px;
+	margin:0px;
+}
+
+.teacher-comments ul {
+	margin:0px;
+	padding: 0px;
+}
+
+
+#diary h2 {
+		font-family: 'Noto Sans', sans-serif;
+		color: #575757;
+		margin-bottom: 20px;
+		font-size: 20pt;
+	
+}
+
+#diary h4 {
+		font-family: 'Noto Sans', sans-serif;
+		color: #5da422;
+		margin-bottom: 10px;
+		font-size: 13pt;
+		font-weight: 700;
+	
+}
+
+#diary h2 {
+		font-family: 'Noto Sans', sans-serif;
+		color: #575757;
+		margin-bottom: 20px;
+		font-size: 20pt;
+	
+}
+
+#diary table {
+	border:none;
+}
+
+#diary .panel {
+	background-color: #FFF;
+	border:none;
+	box-shadow: 1px 1px 2px #ebebeb;
+	padding:0px;	
+}
+
+#diary h5 {
+	background-color: #8dc63f;
+	color: #FFF;
+	display: block;
+	padding:10px;
+}
+
+.all-comments {
+	color: #FFF;
+	float:right;
+	font-size: 8pt;
+	font-weight: 900;
+	display: block;
+	padding:5px;
+	background-color: #6c9f28;
+}
+
+.all-comments:hover {
+	background-color: #85be39;
+	color: #FFF;
+}
+
+#diary textarea {
+	margin-bottom: 20px;
+}
+
+#diary select {
+	background-color: #FFF;
+	border:none;
+	box-shadow: 1px 1px 2px #ebebeb;
+}
+
+#diary #resources {
+	padding-top: 20px
+}
+
+#diary h1 {
+	background-color: #FFF;
+	border:none;
+	box-shadow: 1px 1px 2px #ebebeb;
+	color: #575757;
+	padding:10px;
+	font-size:20pt;
+	font-family: 'Noto Sans', sans-serif;
+	font-weight: bold;
+
+}

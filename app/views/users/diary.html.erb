@@ -1,41 +1,58 @@
-<div id="list-users" class="large-12 columns">
+<div id="diary" class="large-12 columns">
   
   <%= render partial: 'users/date_header' %>
 
   <% if @lesson.blank? %>
-    <table width="100%">
-      <tr>
-        <td colspan="2"><h3 align="center"><%= "No lesson for this day!" %></h3></td>
-      </tr>
-    </table>
+
+  <h3 align="center"><%= "No lesson for this day!" %>
+
   <% else %>
     <%= form_for(@lesson) do |f| %>
 
-      <table width="100%">
+  <h1 align="center"><%= f.object.name %></h1>
 
-        <tr>
-          <td colspan="2"><h1 align="center"><%= f.object.name %></h3></td>
-        </tr>
+    <div class="row">
 
-        <tr>
-          <td width="50%">
-            <h4 align="center">Must be practised:</h4>
+        <div class="large-6 columns">
+            <h5 align="center">Must be practised:</h5>
+            <p>e.g What you need to do to complete this lesson</p>
             <%= f.text_area :must_be_practised, size: "x12", disabled: (current_user.role != "teacher") %>
-          </td>
-          <td width="50%">
-            <h4 align="center">How to practise:</h4>
+            <h5 align="center">How to practise:</h5>
+            <p>e.g Some helpful info on how best to practice this lesson</p>
             <%= f.text_area :how_to_practise, size: "x12", disabled: (current_user.role != "teacher") %>
-          </td>
-        </tr>
+          <%= select_tag('lesson[status]', options_for_select(['new','in progress', 'completed'], f.object.status)) %>            
+        </div>
 
-        <tr>
-          <td colspan="2" >
-           
-            <div class="field-item">
-              <h4 align="center">Resources:</h4>
+        <div class="large-6 columns">
+            <h5 align="center">Student comments <%= link_to "all comments", lesson_comments_path(@lesson), :class => "all-comments" %></h5>
+            <div class="teacher-comments panel">
+            <ul id="teacher_comments" class="list-group">
+            <%= render @lesson.comments.where("type_owner = ?", "student").last(10), locals: {simple: true} %>
+            </ul>
+            </div>
+
+            <h5 align="center">Minutes was practiced:</h5>
+            <%= render "users/minutes_was_practiced" %>
+
+            <h5 align="center">Teachers comments <%= link_to "all comments", lesson_comments_path(@lesson), :class => "all-comments" %></h5>
+            <div class="teacher-comments panel">
+            <ul id="teacher_comments" class="list-group">
+            <%= render @lesson.comments.where("type_owner = ?", "teacher").last(10), locals: {simple: true} %>
+            </ul>
+            </div>
+
+                        <%= select_tag('lesson[raiting]', options_for_select(["Bronze","Silver","Gold","Platinum"],f.object.raiting), {disabled: (current_user.role != "teacher")}) %>
+
+        </div>
+
+  <div id="resources" class="large-12 columns">
+  <h5 align="center">Resources for this lesson</h5>   
+   <div class="panel">
+   <div class="field-item">
+
               <% @resources_all = @resources; @resources = @lesson.resources; @resources_show = {} %>
               <%= render partial: 'resources/available_resources', locals:{ local_hash: {mode: "embedded", parent_model_name: "lesson", table_id_pre: "embedded_", checked: true, change: current_user.admin}} %>
-            </div>
+   </div>
 
             <% if current_user.role == "teacher" %>
               <div class="ui-widget">
@@ -60,8 +77,16 @@
               </div>
             <% end %>
 
-          </td>
-        </tr>
+  </div>
+
+</div>
+
+
+
+    </div>
+
+
+      <table width="100%">
 
         <% if current_user.role == 'teacher' %>
         <tr>
@@ -87,45 +112,6 @@
           </td>
         </tr>
         <% end %>
-
-        <tr>
-          <td>
-            <h4 align="center">Status:</h4>
-            <%= select_tag('lesson[status]', options_for_select(['new','in progress', 'completed'], f.object.status)) %>
-          </td>
-          <td>
-            <h4 align="center">Raiting:</h4>
-            <%= select_tag('lesson[raiting]', options_for_select(["Bronze","Silver","Gold","Platinum"],f.object.raiting), {disabled: (current_user.role != "teacher")}) %>
-          </td>    
-        </tr>
-
-        <tr>
-          <td colspan="2">
-            <h4 align="center">Minutes was practiced:</h4>
-            <%= render "users/minutes_was_practiced" %>
-          </td>
-        </tr>
-
-        <tr>
-          <td colspan="2"><h4 align="center">Last comments:</h4><td>
-        <tr>
-
-        <tr>
-          <td>
-            <ul id="teacher_comments" class="list-group">
-              <%= render @lesson.comments.where("type_owner = ?", "student").last(5), locals: {simple: true} %>
-            </ul>
-          </td>
-           <td>
-                <ul id="teacher_comments" class="list-group">
-                  <%= render @lesson.comments.where("type_owner = ?", "teacher").last(5), locals: {simple: true} %>
-                </ul>
-          </td>
-        </tr>
-
-        <tr>
-          <td colspan="2"><%= link_to "all comments", lesson_comments_path(@lesson) %></td>
-        <tr>
 
       </table>
 
