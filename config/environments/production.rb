@@ -92,6 +92,7 @@ Rails.application.configure do
 
   config.assets.precompile += %w( vendor/modernizr.js )
   config.assets.precompile += %w( foundation-icons/foundation-icons.css )
+  config.assets.precompile += %w( stylesheets/foundation.min.css )
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   
 end
