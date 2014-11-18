@@ -15,33 +15,28 @@
 
         <div class="large-6 columns">
             <h5 align="center">Must be practised:</h5>
-            <p>e.g What you need to do to complete this lesson</p>
             <%= f.text_area :must_be_practised, size: "x12", disabled: (current_user.role != "teacher") %>
             <h5 align="center">How to practise:</h5>
-            <p>e.g Some helpful info on how best to practice this lesson</p>
             <%= f.text_area :how_to_practise, size: "x12", disabled: (current_user.role != "teacher") %>
-          <%= select_tag('lesson[status]', options_for_select(['new','in progress', 'completed'], f.object.status)) %>            
         </div>
 
         <div class="large-6 columns">
-            <h5 align="center">Student comments <%= link_to "all comments", lesson_comments_path(@lesson), :class => "all-comments" %></h5>
-            <div class="teacher-comments panel">
-            <ul id="teacher_comments" class="list-group">
-            <%= render @lesson.comments.where("type_owner = ?", "student").last(10), locals: {simple: true} %>
-            </ul>
-            </div>
-
-            <h5 align="center">Minutes was practiced:</h5>
+          <h5 align="center">Minutes was practiced:</h5>
             <%= render "users/minutes_was_practiced" %>
 
-            <h5 align="center">Teachers comments <%= link_to "all comments", lesson_comments_path(@lesson), :class => "all-comments" %></h5>
+            <h5 align="center">Latest comments <%= link_to "Reply", lesson_comments_path(@lesson), :class => "all-comments" %></h5>
             <div class="teacher-comments panel">
             <ul id="teacher_comments" class="list-group">
-            <%= render @lesson.comments.where("type_owner = ?", "teacher").last(10), locals: {simple: true} %>
+            <%= render @lesson.comments.last(20), locals: {simple: true} %>
             </ul>
             </div>
 
-                        <%= select_tag('lesson[raiting]', options_for_select(["Bronze","Silver","Gold","Platinum"],f.object.raiting), {disabled: (current_user.role != "teacher")}) %>
+             <%= select_tag('lesson[raiting]', options_for_select(["Bronze","Silver","Gold","Platinum"],f.object.raiting), {disabled: (current_user.role != "teacher")}) %>
+
+              <% [ 'Bronze', 'Silver', 'Gold', 'Platinum' ].each do |raiting| %>
+                <br><%= radio_button_tag 'lesson[raiting]', f.object.raiting, @raiting == f.object.raiting %>
+                <%= label_tag "raiting_#{raiting}", raiting.humanize %>
+              <% end %>
 
         </div>
 

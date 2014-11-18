@@ -3,7 +3,7 @@
     <%= form_for Resource.new do |f| %>
       <%= f.file_field :attachment %>
       <%= f.hidden_field :attachment_cache %>
-      <%= label_tag(:remote_link, "Remote link") %>
+      <%= label_tag(:remote_link, "Website Link") %>
       <%= f.text_field :link %>
       <%= f.submit 'Add new resource', :class => "success button" %>
     <% end %>

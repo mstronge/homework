@@ -21,7 +21,7 @@ module Homework
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.serve_static_assets = true
-    config.action_mailer.delivery_method = :postmark
-    config.action_mailer.postmark_settings = { :api_key => "d793e1c9-ed9d-4a65-8803-880e70ed1a1a" }
+    #config.action_mailer.delivery_method = :postmark
+    #config.action_mailer.postmark_settings = { :api_key => "d793e1c9-ed9d-4a65-8803-880e70ed1a1a" }
   end
 end
